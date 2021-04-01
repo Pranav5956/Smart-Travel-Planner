@@ -12,6 +12,7 @@ import MapGL, {
   Marker,
   Source,
   Layer,
+  FlyToInterpolator,
 } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import * as turf from "@turf/turf";
@@ -21,7 +22,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
-import axios from "axios";
+import axios from "../axios";
 
 const routeLayerStyle = {
   id: "routeLayer",
@@ -65,35 +66,42 @@ const Map = ({
     longitude: (start.coordinates[0] + destination.coordinates[0]) / 2,
     zoom: 5,
   });
-  const [routeGeoJSON, setRouteGeoJSON] = useState(turf.featureCollection([]));
+
+  const flyToLocation = (latitude, longitude) => {
+    setViewport((viewport) => ({
+      ...viewport,
+      latitude,
+      longitude,
+      zoom: 14,
+      transitionDuration: 500,
+      transitionInterpolator: new FlyToInterpolator(),
+    }));
+  };
+
+  const [routeGeoJSON, setRouteGeoJSON] = useState(null);
 
   useEffect(() => {
-    const routePoints = [start, ...markers, destination].map(
-      (point) => point.coordinates
-    );
-    const formattedRoutePoints = routePoints
-      .map((point) => `${point[0]},${point[1]}`)
-      .join(";");
-
     const getOptimizedRoute = async () => {
-      const optimizedRoute = await axios.get(
-        `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${formattedRoutePoints}?overview=full&steps=true&source=first&destination=last&geometries=geojson&roundtrip=false&access_token=${process.env.REACT_APP_MAPBOX_ACCESS_TOKEN}`
-      );
+      const points = [start, ...markers, destination]
+        .map((point) => point.coordinates.join(","))
+        .join(";");
 
-      if (optimizedRoute.data.trips && optimizedRoute.data.trips.length)
+      const optimizedRoute = await axios.get(`/api/route/optimize/${points}`);
+
+      if (optimizedRoute.data.id === "Ok")
         setRouteGeoJSON(
           turf.featureCollection(
-            turf.feature(optimizedRoute.data.trips[0].geometry)
+            turf.feature(optimizedRoute.data.route.trips[0].geometry)
           )
         );
       else {
-        alert("No route found!");
-        setRouteGeoJSON(turf.featureCollection([]));
+        alert(optimizedRoute.data.message);
+        setRouteGeoJSON(null);
       }
     };
 
     getOptimizedRoute();
-  }, [markers]);
+  }, [start, destination, markers]);
 
   const mapRef = useRef();
 
@@ -169,7 +177,10 @@ const Map = ({
           longitude={marker.coordinates[0]}
           latitude={marker.coordinates[1]}
           key={index}
-          {...props.marker}>
+          {...props.marker}
+          onClick={() =>
+            flyToLocation(marker.coordinates[1], marker.coordinates[0])
+          }>
           <FaMapMarkerAlt color="orange" size={markerSize} />
         </Marker>
       )),
@@ -184,20 +195,28 @@ const Map = ({
       <Marker
         longitude={start.coordinates[0]}
         latitude={start.coordinates[1]}
-        {...props.marker}>
+        {...props.marker}
+        onClick={() =>
+          flyToLocation(start.coordinates[1], start.coordinates[0])
+        }>
         <FaMapMarkerAlt color="green" size={markerSize} />
       </Marker>
       <Marker
         longitude={destination.coordinates[0]}
         latitude={destination.coordinates[1]}
-        {...props.marker}>
+        {...props.marker}
+        onClick={() =>
+          flyToLocation(destination.coordinates[1], destination.coordinates[0])
+        }>
         <FaMapMarkerAlt color="red" size={markerSize} />
       </Marker>
       {Markers}
-      <Source id="route" type="geojson" data={routeGeoJSON.features}>
-        <Layer {...routeLayerStyle} />
-        <Layer {...routeDirectionStyle} />
-      </Source>
+      {routeGeoJSON && (
+        <Source id="route" type="geojson" data={routeGeoJSON.features}>
+          <Layer {...routeLayerStyle} />
+          <Layer {...routeDirectionStyle} />
+        </Source>
+      )}
     </MapGL>
   );
 };

@@ -42,7 +42,6 @@ const NavBar = ({ theme }) => {
             </NavItem>
           </Nav>
           <Nav className="ml-auto d-flex align-items-center" navbar>
-            <NavbarText className="mx-3">Toggle Theme</NavbarText>
             <ReactSwitch
               aria-labelledby="Toggle theme"
               checked={checked}
@@ -56,6 +55,7 @@ const NavBar = ({ theme }) => {
               height={20}
               boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
               activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              title="Toggle Theme"
             />
           </Nav>
         </Collapse>

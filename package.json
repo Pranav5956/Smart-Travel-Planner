@@ -1,0 +1,43 @@
+{
+  "name": "smart-travel-planner",
+  "version": "1.0.0",
+  "description": "Smart Travel Planner Application",
+  "main": "index.js",
+  "scripts": {
+    "server-test": "node index.js",
+    "server-dev": "nodemon index.js",
+    "client-dev": "npm start --prefix smart-travel-planner",
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\""
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pranav5956/Smart-Travel-Planner.git"
+  },
+  "keywords": [
+    "travel-planner",
+    "travel",
+    "planner",
+    "smart",
+    "smart-travel",
+    "trip"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pranav5956/Smart-Travel-Planner/issues"
+  },
+  "homepage": "https://github.com/Pranav5956/Smart-Travel-Planner#readme",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.3"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "cors": "^2.8.5",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7"
+  }
+}
