@@ -1,0 +1,31 @@
+header {
+  overflow: hidden;
+}
+
+.navbar {
+  width: 100vw;
+  -webkit-transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
+}
+
+.navbar a,
+.navbar .navbar-text {
+  color: white;
+}
+
+.dark-theme .navbar a,
+.dark-theme .navbar .navbar-text {
+  color: black;
+}
+
+.app {
+  background-color: #f8f8f8;
+  -webkit-transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  width: 100vw;
+}
+
+.dark-theme {
+  background-color: #191a1a;
+}
+/*# sourceMappingURL=App.css.map */

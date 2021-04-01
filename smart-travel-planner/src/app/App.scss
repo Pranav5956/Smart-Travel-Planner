@@ -1,0 +1,32 @@
+@import "./styles/themes";
+
+header {
+  overflow: hidden;
+}
+
+.navbar {
+  width: 100vw;
+  transition: background 0.2s ease-in-out;
+}
+
+.navbar a,
+.navbar .navbar-text {
+  color: white;
+}
+
+.dark-theme .navbar a,
+.dark-theme .navbar .navbar-text {
+  color: black;
+}
+
+.app {
+  background-color: $light-background-color;
+  // color: $light-primary-color;
+  transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  width: 100vw;
+}
+
+.dark-theme {
+  background-color: $dark-background-color;
+  // color: $dark-primary-color;
+}
