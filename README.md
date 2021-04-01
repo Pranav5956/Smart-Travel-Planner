@@ -1,2 +1,2 @@
 # Smart-Travel-Planner
-<code>npm run dev</code> to run the application.
+Type <code>npm run dev</code> in the terminal to run the application.
