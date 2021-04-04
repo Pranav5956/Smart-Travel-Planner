@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "clsx": "^1.1.1",
+    "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-bootstrap-icons": "^1.4.0",
     "react-dom": "^17.0.2",
@@ -21,8 +22,11 @@
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-select": "^4.3.0",
+    "react-slider": "^1.1.4",
     "react-switch": "^6.0.0",
-    "reactstrap": "^8.9.0"
+    "reactstrap": "^8.9.0",
+    "styled-components": "^5.2.3"
   },
   "scripts": {
     "start": "react-scripts start",

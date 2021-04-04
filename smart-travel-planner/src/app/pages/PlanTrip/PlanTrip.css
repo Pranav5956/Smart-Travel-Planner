@@ -82,6 +82,7 @@
   width: 75%;
   height: 100%;
   background: #efefef;
+  padding: 5rem 1rem 0 3rem;
 }
 
 .plantrip__sidebar-item {
@@ -105,4 +106,68 @@
 
 .mapboxgl-ctrl-geocoder--input:focus {
   outline: none;
+}
+
+.plantrip__info-hotelsContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+
+.plantrip__info-hotels {
+  width: 60%;
+  height: 100%;
+}
+
+.plantrip__info-hotelQuery {
+  width: 40%;
+  height: 100%;
+  background-color: white;
+  margin: 1rem;
+  border-radius: 0.5em;
+  padding: 1rem;
+}
+
+.plantrip__info-hotelQuery--header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.3rem;
+  padding: 0 1rem;
+}
+
+.plantrip__info-hotelQuery--queries {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 90%;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.plantrip__info-hotelQuery--header .btn {
+  padding: 0.3rem 1.3rem;
+}
+
+.hotelQuery-heading {
+  font-size: 1.3rem;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0;
+  flex: 1;
+}
+
+.plantrip__info-main .nav-item {
+  width: 50%;
+  text-align: center;
+}
+
+.tab-content {
+  height: 90%;
+}
+
+.tab-pane {
+  height: 100%;
 }

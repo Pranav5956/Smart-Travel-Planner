@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import PlanTrip from "./pages/PlanTrip/PlanTrip";
 
-import NavBar from "./Components/Navbar";
+import NavBar from "./components/Navbar";
 
 import clsx from "clsx";
 import { selectTheme } from "./redux/features/Theme";

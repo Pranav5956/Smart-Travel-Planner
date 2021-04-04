@@ -9,10 +9,10 @@ import { IoClose } from "react-icons/io5";
 import { Form, FormGroup, Input, Button } from "reactstrap";
 
 import { selectStart, selectDestination } from "../../redux/features/Map";
-import Map from "../../Components/Map";
+import Map from "../../components/Map";
 
 import "./PlanTrip.css";
-import PlanTripInformation from "../../Components/PlanTripInformation";
+import PlanTripInformation from "../../components/PlanTripInformation";
 
 const PlanTrip = () => {
   const start = useSelector(selectStart);
