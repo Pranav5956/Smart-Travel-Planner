@@ -39,12 +39,6 @@ export const {
   removeStop,
 } = mapSlice.actions;
 
-// export const incrementAsync = (amount) => (dispatch) => {
-//   setTimeout(() => {
-//     dispatch(incrementByAmount(amount));
-//   }, 1000);
-// };
-
 export const selectStart = (state) => state.map.start;
 export const selectDestination = (state) => state.map.destination;
 export const selectStops = (state) => state.map.stops;

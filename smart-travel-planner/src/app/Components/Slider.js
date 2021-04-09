@@ -23,9 +23,7 @@ const StyledThumb = styled.div`
 `;
 
 const Thumb = (props, state) => (
-  <StyledThumb {...props}>
-    {state.valueNow > 500 ? `${state.valueNow / 1000}K` : state.valueNow}
-  </StyledThumb>
+  <StyledThumb {...props}>{state.valueNow}</StyledThumb>
 );
 
 const StyledTrack = styled.div`
@@ -39,17 +37,18 @@ const Track = (props, state) => <StyledTrack {...props} index={state.index} />;
 
 const Slider = ({ min, max, onChange }) => {
   return (
-    <StyledSlider
-      defaultValue={[min, max]}
-      min={0}
-      max={10000}
-      renderTrack={Track}
-      renderThumb={Thumb}
-      onChange={onChange}
-      pearling
-      minDistance={1000}
-      step="500"
-    />
+    <div className="m-2 mt-3">
+      <StyledSlider
+        defaultValue={[min, max]}
+        min={0}
+        max={10}
+        renderTrack={Track}
+        renderThumb={Thumb}
+        onChange={onChange}
+        pearling
+        minDistance={1}
+      />
+    </div>
   );
 };
 

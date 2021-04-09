@@ -32,21 +32,72 @@ const getFormattedDate = (translate = 0) => {
   return moment().add(translate, "days").format("YYYY-MM-DD");
 };
 
+const formatFilters = (filters) => {
+  const star_rating_ids = filters.star_rating_ids
+    .map((rating) => rating.value)
+    .join(",");
+  const amenity_ids = filters.amenity_ids
+    .map((amenity) => amenity.value)
+    .join(",");
+  const theme_ids = filters.theme_ids.map((theme) => theme.value).join(",");
+
+  const formattedFilters = {
+    checkin_date: filters.checkin_date,
+    checkout_date: filters.checkout_date,
+    adults_number: filters.adults_number.toString(),
+    sort_order: filters.sort_order.value,
+    price_max: filters.price_max.toString(),
+    price_min: filters.price_min.toString(),
+    guest_rating_min: filters.guest_rating_min.toString(),
+    ...(star_rating_ids && { star_rating_ids }),
+    ...(amenity_ids && { amenity_ids }),
+    ...(theme_ids && { theme_ids }),
+  };
+
+  return formattedFilters;
+};
+
+const customSelectStyle = {
+  multiValue: (provided, state) => ({
+    ...provided,
+    backgroundColor: "#007bff",
+  }),
+  multiValueLabel: (provided, state) => ({
+    ...provided,
+    color: "#ffffff",
+    paddingLeft: "0.5rem",
+    paddingRight: "0.3rem",
+  }),
+  multiValueRemove: (provided, state) => ({
+    ...provided,
+    color: "#ffffff",
+  }),
+};
+
 const PlanTripInformation = ({ stops }) => {
   const [selected, setSelected] = useState(stops.length - 1);
-  const [activeTab, updateActiveTab] = useState(1);
+  const [activeTab, updateActiveTab] = useState("1");
   const [hotelInfo, setHotelInfo] = useState(null);
   const [filterQueries, updateFilterQueries] = useState({
-    checkIn: getFormattedDate(),
-    checkOut: getFormattedDate(1),
-    adults: 1,
-    sort: sortOptions[0],
-    price: { min: 0, max: 10000 },
-    minGuestRating: 7,
-    starRatings: [starRatingOptions[0]],
-    amenities: [],
-    themes: [],
+    checkin_date: getFormattedDate(),
+    checkout_date: getFormattedDate(1),
+    adults_number: 1,
+    sort_order: sortOptions[0],
+    price_min: 0,
+    price_max: 10,
+    guest_rating_min: 7,
+    star_rating_ids: [starRatingOptions[0]],
+    amenity_ids: [],
+    theme_ids: [],
   });
+
+  useEffect(() => {
+    setSelected(stops.length - 1);
+  }, [stops, setSelected]);
+
+  useEffect(() => {
+    formatFilters(filterQueries);
+  }, [filterQueries]);
 
   const setQuery = (query, value) => {
     updateFilterQueries({ ...filterQueries, [query]: value });
@@ -115,8 +166,10 @@ const PlanTripInformation = ({ stops }) => {
                       <Input
                         type="date"
                         id="check-in"
-                        value={filterQueries.checkIn}
-                        onChange={(e) => setQuery("checkIn", e.target.value)}
+                        value={filterQueries.checkin_date}
+                        onChange={(e) =>
+                          setQuery("checkin_date", e.target.value)
+                        }
                       />
                     </FormGroup>
                     <FormGroup>
@@ -124,8 +177,10 @@ const PlanTripInformation = ({ stops }) => {
                       <Input
                         type="date"
                         id="check-out"
-                        value={filterQueries.checkOut}
-                        onChange={(e) => setQuery("checkOut", e.target.value)}
+                        value={filterQueries.checkout_date}
+                        onChange={(e) =>
+                          setQuery("checkout_date", e.target.value)
+                        }
                       />
                     </FormGroup>
                     <Row form>
@@ -135,10 +190,12 @@ const PlanTripInformation = ({ stops }) => {
                           <Input
                             type="number"
                             id="adults"
-                            value={filterQueries.adults}
+                            value={filterQueries.adults_number}
                             min="1"
                             max="6"
-                            onChange={(e) => setQuery("adults", e.target.value)}
+                            onChange={(e) =>
+                              setQuery("adults_number", e.target.value)
+                            }
                           />
                         </FormGroup>
                       </Col>
@@ -150,67 +207,70 @@ const PlanTripInformation = ({ stops }) => {
                           <Input
                             type="number"
                             id="minGuestRating"
-                            value={filterQueries.minGuestRating}
+                            value={filterQueries.guest_rating_min}
                             min="0"
                             max="10"
                             onChange={(e) =>
-                              setQuery("minGuestRating", e.target.value)
+                              setQuery("guest_rating_min", e.target.value)
                             }
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                     <FormGroup>
-                      <Label for="sort">Sort results by</Label>
-                      <Select
-                        defaultValue={[filterQueries.sort]}
-                        options={sortOptions}
-                        onChange={(option) => setQuery("sort", option)}
+                      <Label for="price">
+                        Choose maximum price (in 100USD)
+                      </Label>
+                      <Slider
+                        min={filterQueries.price_min}
+                        max={filterQueries.price_max}
+                        onChange={([min, max]) => {
+                          setQuery("price_min", min);
+                          setQuery("price_max", max);
+                        }}
                       />
                     </FormGroup>
                     <FormGroup>
-                      <Label for="price">Choose maximum price</Label>
-                      <Slider
-                        min={filterQueries.price.min}
-                        max={filterQueries.price.max}
-                        onChange={([min, max]) =>
-                          setQuery("price", { min, max })
-                        }
+                      <Label for="sort">Sort results by</Label>
+                      <Select
+                        defaultValue={[filterQueries.sort_order]}
+                        options={sortOptions}
+                        onChange={(option) => setQuery("sort_order", option)}
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label for="starRating">Star Rating</Label>
                       <Select
-                        defaultValue={filterQueries.starRatings}
+                        styles={customSelectStyle}
+                        defaultValue={filterQueries.star_rating_ids}
                         options={starRatingOptions}
                         isMulti
-                        value={filterQueries.starRatings}
+                        value={filterQueries.star_rating_ids}
                         onChange={(option) =>
-                          setQuery(
-                            "starRatings",
-                            option.length ? option : filterQueries.starRatings
-                          )
+                          setQuery("star_rating_ids", option)
                         }
                       />
                     </FormGroup>
                     <FormGroup>
-                      <Label for="amenities">Amenities</Label>
+                      <Label for="amenities">Facilities</Label>
                       <Select
-                        defaultValue={filterQueries.amenities}
+                        styles={customSelectStyle}
+                        defaultValue={filterQueries.amenity_ids}
                         options={amenitiesOptions}
                         isMulti
-                        value={filterQueries.amenities}
-                        onChange={(option) => setQuery("amenities", option)}
+                        value={filterQueries.amenity_ids}
+                        onChange={(option) => setQuery("amenity_ids", option)}
                       />
                     </FormGroup>
                     <FormGroup>
                       <Label for="themes">Themes</Label>
                       <Select
-                        defaultValue={filterQueries.themes}
+                        styles={customSelectStyle}
+                        defaultValue={filterQueries.theme_ids}
                         options={themesOptions}
                         isMulti
-                        value={filterQueries.themes}
-                        onChange={(option) => setQuery("themes", option)}
+                        value={filterQueries.theme_ids}
+                        onChange={(option) => setQuery("theme_ids", option)}
                       />
                     </FormGroup>
                   </Form>

@@ -59,6 +59,8 @@ const Map = ({
   geocoderContainerRef,
   geocoderValue,
   updateGeocoderValue,
+  selectedStop,
+  updateSelectedStop,
   ...mapProps
 }) => {
   const [viewport, setViewport] = useState({
@@ -73,7 +75,7 @@ const Map = ({
       latitude,
       longitude,
       zoom: 14,
-      transitionDuration: 500,
+      transitionDuration: 2000,
       transitionInterpolator: new FlyToInterpolator(),
     }));
   };
@@ -86,22 +88,30 @@ const Map = ({
         .map((point) => point.coordinates.join(","))
         .join(";");
 
-      const optimizedRoute = await axios.get(`/api/route/optimize/${points}`);
+      const response = await axios.get(`/api/route/optimize/${points}`, {
+        headers: { "x-auth-token": localStorage.getItem("token") },
+      });
+      const data = response.data;
 
-      if (optimizedRoute.data.id === "Ok")
+      if (data.id === "Ok")
         setRouteGeoJSON(
-          turf.featureCollection(
-            turf.feature(optimizedRoute.data.route.trips[0].geometry)
-          )
+          turf.featureCollection(turf.feature(data.route.trips[0].geometry))
         );
       else {
-        alert(optimizedRoute.data.message);
         setRouteGeoJSON(null);
       }
     };
 
     getOptimizedRoute();
   }, [start, destination, markers]);
+
+  useEffect(() => {
+    if (!selectedStop) return;
+
+    const [longitude, latitude] = selectedStop.coordinates;
+    flyToLocation(latitude, longitude);
+    updateSelectedStop(null);
+  }, [selectedStop, updateSelectedStop]);
 
   const mapRef = useRef();
 
@@ -178,13 +188,11 @@ const Map = ({
           latitude={marker.coordinates[1]}
           key={index}
           {...props.marker}
-          onClick={() =>
-            flyToLocation(marker.coordinates[1], marker.coordinates[0])
-          }>
+          onClick={() => updateSelectedStop(marker)}>
           <FaMapMarkerAlt color="orange" size={markerSize} />
         </Marker>
       )),
-    [props.marker, markers]
+    [props.marker, markers, updateSelectedStop]
   );
 
   return (
@@ -196,18 +204,14 @@ const Map = ({
         longitude={start.coordinates[0]}
         latitude={start.coordinates[1]}
         {...props.marker}
-        onClick={() =>
-          flyToLocation(start.coordinates[1], start.coordinates[0])
-        }>
+        onClick={() => updateSelectedStop(start)}>
         <FaMapMarkerAlt color="green" size={markerSize} />
       </Marker>
       <Marker
         longitude={destination.coordinates[0]}
         latitude={destination.coordinates[1]}
         {...props.marker}
-        onClick={() =>
-          flyToLocation(destination.coordinates[1], destination.coordinates[0])
-        }>
+        onClick={() => updateSelectedStop(destination)}>
         <FaMapMarkerAlt color="red" size={markerSize} />
       </Marker>
       {Markers}

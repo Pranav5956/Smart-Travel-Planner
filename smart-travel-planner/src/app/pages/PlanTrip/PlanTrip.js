@@ -23,6 +23,7 @@ const PlanTrip = () => {
 
   const [stop, updateStop] = useState("");
   const [stops, updateStops] = useState([]);
+  const [selectedStop, updateSelectedStop] = useState(null);
 
   if (!start || !destination) {
     history.push("/home", { from: "Plan Trip" });
@@ -51,13 +52,25 @@ const PlanTrip = () => {
         <div className="plantrip__locations-controls">
           <Form onSubmit={addStop}>
             <FormGroup className="plantrip__input-readonly">
-              <Input type="text" value={start.name} readOnly />
+              <Input
+                type="text"
+                value={start.name}
+                readOnly
+                onClick={() => updateSelectedStop(start)}
+                role="button"
+              />
             </FormGroup>
             {stops && (
               <FormGroup className="plantrip__input">
                 {stops.map((stop, index) => (
                   <div key={index} className="plantrip__input-stops">
-                    <Input type="text" value={stop.name || ""} readOnly />
+                    <Input
+                      type="text"
+                      value={stop.name || ""}
+                      readOnly
+                      onClick={() => updateSelectedStop(stop)}
+                      role="button"
+                    />
                     <Button
                       color="danger"
                       size="md"
@@ -82,7 +95,13 @@ const PlanTrip = () => {
             </FormGroup>
 
             <FormGroup className="plantrip__input-readonly">
-              <Input type="text" value={destination.name} readOnly />
+              <Input
+                type="text"
+                value={destination.name}
+                readOnly
+                onClick={() => updateSelectedStop(destination)}
+                role="button"
+              />
             </FormGroup>
           </Form>
         </div>
@@ -95,6 +114,8 @@ const PlanTrip = () => {
           geocoderValue={stop}
           updateGeocoderValue={updateStop}
           geocoderContainerRef={geocoderContainerRef}
+          selectedStop={selectedStop}
+          updateSelectedStop={updateSelectedStop}
         />
       </div>
       <div className="plantrip__info">

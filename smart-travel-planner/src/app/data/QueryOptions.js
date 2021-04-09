@@ -7,17 +7,10 @@ export const starRatingOptions = [
 ];
 
 export const sortOptions = [
-  { value: "SORT_BY_MAXIMUM_PRICE_FIRST", label: "Decreasing Prices" },
-  { value: "SORT_BY_MINIMUM_PRICE_FIRST", label: "Increasing Prices" },
-  {
-    value: "SORT_BY_MAXIMUM_STAR_RATING_FIRST",
-    label: "Decreasing Star Rating",
-  },
-  {
-    value: "SORT_BY_MINIMUM_STAR_RATING_FIRST",
-    label: "Increasing Star Rating",
-  },
-  { value: "SORT_BY_CLOSENESS", label: "Closeness" },
+  { value: "STAR_RATING_HIGHEST_FIRST", label: "Highest Star Rating" },
+  { value: "STAR_RATING_LOWEST_FIRST", label: "Lowest Star Rating" },
+  { value: "PRICE_HIGHEST_FIRST", label: "Highest Pricing" },
+  { value: "PRICE", label: "Pricing" },
 ];
 
 export const amenitiesOptions = [
@@ -25,8 +18,8 @@ export const amenitiesOptions = [
   { value: 537, label: "Smoking areas" },
   { value: 515, label: "Bar" },
   { value: 2048, label: "Breakfast included" },
-  { value: 513, label: "Airport Transfers *" },
-  { value: 16384, label: "Parking Available *" },
+  { value: 513, label: "Airport Transfers" },
+  { value: 16384, label: "Parking Available" },
   { value: 519, label: "Business facilities" },
   { value: 1, label: "Meeting Facilities" },
   { value: 256, label: "Restaurant" },

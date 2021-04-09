@@ -5,23 +5,29 @@ import {
   Nav,
   Navbar,
   NavbarBrand,
+  NavbarText,
   NavbarToggler,
   NavItem,
   NavLink,
 } from "reactstrap";
 import { toggleTheme } from "../redux/features/Theme";
-import { useDispatch } from "react-redux";
+import { selectUser, unsetUser } from "../redux/features/Auth";
+import { useSelector, useDispatch } from "react-redux";
 
 const NavBar = ({ theme }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [checked, setChecked] = useState(false);
 
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const toggleOpen = () => setIsOpen((isOpen) => !isOpen);
   const onChecked = (checked) => {
     setChecked(checked);
     dispatch(toggleTheme());
+  };
+  const logout = () => {
+    dispatch(unsetUser());
   };
 
   const altTheme = theme === "light" ? "dark" : "light";
@@ -41,6 +47,27 @@ const NavBar = ({ theme }) => {
             </NavItem>
           </Nav>
           <Nav className="ml-auto d-flex align-items-center" navbar>
+            {user ? (
+              <>
+                <NavbarText className="pr-3">{`Signed in as ${user.username}`}</NavbarText>
+                <NavItem className="pr-4">
+                  <NavLink href="/home" onClick={logout}>
+                    Logout
+                  </NavLink>
+                </NavItem>
+              </>
+            ) : (
+              <>
+                <NavItem>
+                  <NavLink href="/register">Register</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="/login" className="pr-4">
+                    Login
+                  </NavLink>
+                </NavItem>
+              </>
+            )}
             <ReactSwitch
               aria-labelledby="Toggle theme"
               checked={checked}
