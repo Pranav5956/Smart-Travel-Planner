@@ -7,9 +7,10 @@ import mongoose from "mongoose";
 dotenv.config();
 
 import routeAPI from "./routes/api/route.js";
+import hotelAPI from "./routes/api/hotels.js";
 import auth from "./routes/users/auth.js";
 import { checkForAuthentication } from "./routes/users/auth.middleware.js";
-import User from "./models/User.js";
+// import User from "./models/User.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -37,6 +38,7 @@ app.use(express.json());
 // Routes
 app.use("/users", auth);
 app.use("/api/route", checkForAuthentication, routeAPI);
+app.use("/api/hotels", checkForAuthentication, hotelAPI);
 app.use("*", (req, res) => res.status(404).send());
 
 app.listen(port, () => console.log("Server listening..."));

@@ -19,14 +19,22 @@ import {
 } from "reactstrap";
 import moment from "moment";
 import Select from "react-select";
-import Slider from "../components/Slider";
+import Slider from "../Slider";
+import PlanTripHotelOverview from "./PlanTripHotelOverview";
+import axios from "../../axios";
+
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
+// import { overview } from "../../references/addHotels";
 
 import {
   sortOptions,
   starRatingOptions,
   amenitiesOptions,
   themesOptions,
-} from "../data/QueryOptions";
+} from "../../data/QueryOptions";
+import PlanTripHotelDetails from "./PlanTripHotelDetails";
 
 const getFormattedDate = (translate = 0) => {
   return moment().add(translate, "days").format("YYYY-MM-DD");
@@ -46,8 +54,8 @@ const formatFilters = (filters) => {
     checkout_date: filters.checkout_date,
     adults_number: filters.adults_number.toString(),
     sort_order: filters.sort_order.value,
-    price_max: filters.price_max.toString(),
-    price_min: filters.price_min.toString(),
+    price_max: (filters.price_max * 100).toString(),
+    price_min: (filters.price_min === 0 ? 1 : filters.price_min).toString(),
     guest_rating_min: filters.guest_rating_min.toString(),
     ...(star_rating_ids && { star_rating_ids }),
     ...(amenity_ids && { amenity_ids }),
@@ -75,9 +83,17 @@ const customSelectStyle = {
 };
 
 const PlanTripInformation = ({ stops }) => {
-  const [selected, setSelected] = useState(stops.length - 1);
+  const [selectedStop, setSelectedStop] = useState(stops.length - 1);
+  const [selectedHotel, setSelectedHotel] = useState({
+    hotelId: null,
+    isOpen: false,
+  });
   const [activeTab, updateActiveTab] = useState("1");
-  const [hotelInfo, setHotelInfo] = useState(null);
+  const [hotelInfo, setHotelInfo] = useState({
+    message: "",
+    hotels: [],
+    queried: false,
+  });
   const [filterQueries, updateFilterQueries] = useState({
     checkin_date: getFormattedDate(),
     checkout_date: getFormattedDate(1),
@@ -85,15 +101,15 @@ const PlanTripInformation = ({ stops }) => {
     sort_order: sortOptions[0],
     price_min: 0,
     price_max: 10,
-    guest_rating_min: 7,
-    star_rating_ids: [starRatingOptions[0]],
+    guest_rating_min: 1,
+    star_rating_ids: starRatingOptions,
     amenity_ids: [],
     theme_ids: [],
   });
 
   useEffect(() => {
-    setSelected(stops.length - 1);
-  }, [stops, setSelected]);
+    setSelectedStop(stops.length - 1);
+  }, [stops, setSelectedStop]);
 
   useEffect(() => {
     formatFilters(filterQueries);
@@ -105,25 +121,62 @@ const PlanTripInformation = ({ stops }) => {
 
   const setActiveTab = (tab) => updateActiveTab(tab);
 
+  const getHotels = async (isRecommend = false) => {
+    setHotelInfo({
+      message: isRecommend
+        ? `Fetching Hotel Recommendations for "${stops[selectedStop].name}"`
+        : `Fetching Information about Hotels in "${stops[selectedStop].name}"`,
+      hotels: [],
+      queried: false,
+    });
+    const response = await axios.post(
+      `/api/hotels${isRecommend ? "/recommend" : ""}`,
+      {
+        city: stops[selectedStop].name,
+        filters: formatFilters(filterQueries),
+      },
+      {
+        headers: { "x-auth-token": localStorage.getItem("token") },
+      }
+    );
+    const hotels = response.data;
+    setHotelInfo({ message: "", hotels, queried: true });
+  };
+
   useEffect(() => {
-    setHotelInfo(null);
-    setTimeout(() => {
-      setHotelInfo({});
-    }, 5000);
-  }, [selected]);
+    getHotels();
+  }, [selectedStop]);
+
+  const closeHotelModal = () =>
+    setSelectedHotel((selectedHotel) => ({ ...selectedHotel, isOpen: false }));
+  const unsetHotelDetails = () =>
+    setSelectedHotel((selectedHotel) => ({
+      ...selectedHotel,
+      hotelId: false,
+    }));
 
   return (
     <>
+      {selectedHotel.hotelId && (
+        <PlanTripHotelDetails
+          isOpen={selectedHotel.isOpen}
+          toggle={closeHotelModal}
+          hotelId={selectedHotel.hotelId}
+          filters={filterQueries}
+          unsetHotelDetails={unsetHotelDetails}
+        />
+      )}
       <div className="plantrip__info-sidebar">
         <ListGroup className="plantrip__sidebar-items">
+          <h2 className="pb-3 pl-4">Waypoints</h2>
           {stops.map((stop, index) => (
             <ListGroupItem
               key={index}
               className={clsx({
                 "plantrip__sidebar-item": true,
-                active: selected === index,
+                active: selectedStop === index,
               })}
-              onClick={() => setSelected(index)}>
+              onClick={() => setSelectedStop(index)}>
               <ListGroupItemText>{stop.name}</ListGroupItemText>
             </ListGroupItem>
           ))}
@@ -150,14 +203,45 @@ const PlanTripInformation = ({ stops }) => {
           <TabPane tabId="1">
             <div className="plantrip__info-hotelsContainer">
               <div className="plantrip__info-hotels">
-                {hotelInfo
-                  ? `Hotel information in "${stops[selected].name}"`
-                  : "Fetching information about Hotels..."}
+                {hotelInfo.hotels.length
+                  ? hotelInfo.hotels.map((item, index) => (
+                      <PlanTripHotelOverview
+                        key={`overview-${index}`}
+                        onClickDetails={() => {
+                          setSelectedHotel({ hotelId: item.id, isOpen: true });
+                        }}
+                        {...item}
+                      />
+                    ))
+                  : hotelInfo.queried && (
+                      <div className="plantrip__info-hotels--loader">
+                        <p>No information found with the selected filters!</p>
+                      </div>
+                    )}
+                {hotelInfo.message && (
+                  <div className="plantrip__info-hotels--loader">
+                    <Loader
+                      type="ThreeDots"
+                      color="#007BFF"
+                      height={100}
+                      width={100}
+                      className="loader-icon"
+                    />
+                    <p>{hotelInfo.message}</p>
+                  </div>
+                )}
               </div>
               <div className="plantrip__info-hotelQuery">
                 <div className="plantrip__info-hotelQuery--header">
                   <h4 className="hotelQuery-heading">Find what suits you</h4>
-                  <Button color="primary">Filter</Button>
+                </div>
+                <div className="plantrip__info-hotelQuery--buttons">
+                  <Button color="primary" onClick={() => getHotels()}>
+                    Filter
+                  </Button>
+                  <Button color="danger" onClick={() => getHotels(true)}>
+                    Recommend
+                  </Button>
                 </div>
                 <div className="plantrip__info-hotelQuery--queries">
                   <Form>
@@ -184,7 +268,7 @@ const PlanTripInformation = ({ stops }) => {
                       />
                     </FormGroup>
                     <Row form>
-                      <Col md={5}>
+                      <Col md={4}>
                         <FormGroup>
                           <Label for="adults">Adults</Label>
                           <Input
@@ -199,7 +283,7 @@ const PlanTripInformation = ({ stops }) => {
                           />
                         </FormGroup>
                       </Col>
-                      <Col md={7}>
+                      <Col md={8}>
                         <FormGroup>
                           <Label for="minGuestRating">
                             Minimum Guest Rating
@@ -209,7 +293,7 @@ const PlanTripInformation = ({ stops }) => {
                             id="minGuestRating"
                             value={filterQueries.guest_rating_min}
                             min="0"
-                            max="10"
+                            max="5"
                             onChange={(e) =>
                               setQuery("guest_rating_min", e.target.value)
                             }
@@ -218,9 +302,7 @@ const PlanTripInformation = ({ stops }) => {
                       </Col>
                     </Row>
                     <FormGroup>
-                      <Label for="price">
-                        Choose maximum price (in 100USD)
-                      </Label>
+                      <Label for="price">Choose price range (in 100USD)</Label>
                       <Slider
                         min={filterQueries.price_min}
                         max={filterQueries.price_max}

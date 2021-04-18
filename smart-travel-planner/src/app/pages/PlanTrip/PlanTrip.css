@@ -82,7 +82,8 @@
   width: 75%;
   height: 100%;
   background: #efefef;
-  padding: 5rem 1rem 0 3rem;
+  padding: 5rem 1rem 0 2rem;
+  /* margin-right: 1rem; */
 }
 
 .plantrip__sidebar-item {
@@ -119,6 +120,26 @@
 .plantrip__info-hotels {
   width: 60%;
   height: 100%;
+  margin: 1rem;
+  padding: 1rem;
+  margin-left: 0;
+  padding-top: 0;
+  overflow-y: auto;
+}
+
+.plantrip__info-hotels--loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.plantrip__info-hotels--loader p {
+  font-size: 1.1rem;
+  letter-spacing: 0.025rem;
+  font-weight: 600;
 }
 
 .plantrip__info-hotelQuery {
@@ -131,20 +152,28 @@
 }
 
 .plantrip__info-hotelQuery--header {
+  margin-bottom: 0.8rem;
+  padding: 0 1rem;
+}
+
+.plantrip__info-hotelQuery--buttons {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.3rem;
-  padding: 0 1rem;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.plantrip__info-hotelQuery--buttons .btn {
+  width: 40%;
 }
 
 .plantrip__info-hotelQuery--queries {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 90%;
+  max-height: 80%;
   padding: 1rem;
-  padding-top: 0;
 }
 
 .plantrip__info-hotelQuery--header .btn {
@@ -166,8 +195,258 @@
 
 .tab-content {
   height: 90%;
+  /* background-color: white; */
 }
 
 .tab-pane {
   height: 100%;
+}
+
+/* Overview */
+
+.plantrip__hotel-overview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  background-color: white;
+  padding: 1.5rem;
+  padding-left: 2rem;
+  border-radius: 1em;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.plantrip__hotel-overview:hover {
+  transform: scale(1.03);
+}
+
+.hotel__overview-thumbnail--cropper {
+  position: relative;
+  width: 140px;
+  min-width: 140px;
+  overflow: hidden;
+  border-radius: 50%;
+  height: 140px;
+}
+
+.hotel__overview-thumbnail--cropper img {
+  margin: 0 auto;
+  display: inline;
+  height: 100%;
+  width: auto;
+}
+
+.hotel__overview-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hotel__overview-name {
+  text-transform: uppercase;
+  letter-spacing: 0.035rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-content: center;
+  margin-bottom: 0.2rem;
+}
+
+.hotel__overview-address {
+  font-size: 0.9rem;
+  margin-bottom: 0.1rem;
+}
+
+.hotel__overview-landmarks {
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.hotel__overview-landmarks p {
+  margin-bottom: 0;
+}
+
+.hotel__overview-landmarks ul {
+  padding-left: 1.4rem;
+}
+
+.hotel__overview-attributes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hotel__overview-rating {
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+
+.dv-star-rating-star {
+  font-size: 2rem;
+  transition: transform 0.15s ease-in-out;
+}
+
+.dv-star-rating-star:hover {
+  transform: scale(1.25);
+}
+
+.hotel__overview-price {
+  font-size: 1.7rem;
+  margin-bottom: 0.3rem;
+  margin-left: 1.3rem;
+  position: relative;
+}
+
+.hotel__overview-price > span {
+  font-size: 1rem;
+  position: absolute;
+  top: 0.4rem;
+  left: -0.6rem;
+}
+
+.hotel__overview-buttons {
+  display: flex;
+  gap: 0.8rem;
+}
+
+/* DETAILS */
+
+.plantrip__details-modal {
+  width: 65vw;
+  height: 95vh;
+  border-radius: 1em;
+}
+
+.modal-dialog {
+  max-width: 0;
+  min-width: 80vw;
+}
+
+.plantrip__details-carousel {
+  width: 50vw;
+  height: 55vh;
+  margin: 0 auto;
+  /* border-radius: 1em;
+  overflow: hidden; */
+}
+
+.carousel,
+.carousel-inner,
+.carousel-item {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-item img {
+  height: 100%;
+  width: auto;
+}
+
+.plantrip__details-pages {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+}
+
+.plantrip__details-page {
+  width: 62vw;
+  height: 82vh;
+  margin: 0 auto;
+  scroll-snap-align: start;
+  padding: 1rem;
+}
+
+.plantrip__details-details {
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 3rem;
+  margin-top: 1.75rem;
+}
+
+.plantrip__details-info {
+  flex: 0.65;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 1rem;
+  /* align-items: center; */
+}
+
+.plantrip__details-attributes {
+  flex: 0.35;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 0.3rem;
+}
+
+.plantrip__details-ratings {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.plantrip__details-name {
+  font-size: 1.6rem;
+}
+
+.plantrip__details-address {
+  font-size: 0.9rem;
+}
+
+.plantrip__details-tagline {
+  font-size: 0.9rem;
+  position: relative;
+  quotes: "\201C""\201D""\2018""\2019";
+  text-align: center;
+}
+
+.plantrip__details-tagline p {
+  display: inline;
+}
+
+.plantrip__details-tagline::before {
+  color: #007bff;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.15em;
+  vertical-align: -0.4em;
+}
+
+.plantrip__details-tagline::after {
+  color: #007bff;
+  content: close-quote;
+  font-size: 4rem;
+  line-height: 0.1em;
+  vertical-align: -0.5em;
+}
+
+.plantrip__details-rating {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.plantrip__details-rating p {
+  text-align: center;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+}
+
+.plantrip__details-rating h6 {
+  font-size: 2rem;
+}
+
+.plantrip__details-rating h6 span {
+  font-size: 1.1rem;
+  vertical-align: 0.5rem;
 }

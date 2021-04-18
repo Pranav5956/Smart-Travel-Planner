@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -12,9 +12,22 @@ import { selectStart, selectDestination } from "../../redux/features/Map";
 import Map from "../../components/Map";
 
 import "./PlanTrip.css";
-import PlanTripInformation from "../../components/PlanTripInformation";
+import PlanTripInformation from "../../components/PlanTrip/PlanTripInformation";
 
 const PlanTrip = () => {
+  useEffect(() => {
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    });
+
+    return () =>
+      window.removeEventListener("beforeunload", (e) => {
+        e.preventDefault();
+        e.returnValue = "";
+      });
+  }, []);
+
   const start = useSelector(selectStart);
   const destination = useSelector(selectDestination);
 

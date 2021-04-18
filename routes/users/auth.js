@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 import { checkForAuthentication } from "./auth.middleware.js";
+import { initializeUserProfile } from "../../recommender/hotels/utilities.js";
 
 const router = express.Router();
 
@@ -44,6 +45,7 @@ router.post("/register", (req, res) => {
             (err, token) => {
               if (err) return res.status(500).json({ error: err.message });
 
+              initializeUserProfile(savedUser._id);
               res.json({
                 token,
                 user: {

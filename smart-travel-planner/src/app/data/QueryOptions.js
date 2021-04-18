@@ -10,7 +10,7 @@ export const sortOptions = [
   { value: "STAR_RATING_HIGHEST_FIRST", label: "Highest Star Rating" },
   { value: "STAR_RATING_LOWEST_FIRST", label: "Lowest Star Rating" },
   { value: "PRICE_HIGHEST_FIRST", label: "Highest Pricing" },
-  { value: "PRICE", label: "Pricing" },
+  { value: "PRICE", label: "Lowest Pricing" },
 ];
 
 export const amenitiesOptions = [

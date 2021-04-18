@@ -1,5 +1,5 @@
 import express from "express";
-import axios from "axios";
+import { getOptimizedRoute } from "../../api/route.js";
 
 const router = express.Router();
 
@@ -13,33 +13,19 @@ router.get("/optimize/:points", async (req, res) => {
         message: "No points for the trip are provided!",
       });
 
-    const optimizedRoute = await axios.get(
-      `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${points}`,
-      {
-        params: {
-          access_token: process.env.MAPBOX_API_ACCESS_TOKEN,
-          overview: "full",
-          steps: true,
-          source: "first",
-          destination: "last",
-          geometries: "geojson",
-          roundtrip: false,
-        },
-      }
-    );
+    const response = await getOptimizedRoute(points);
+    const data = response.data;
 
-    const optimizedRouteData = optimizedRoute.data;
-
-    if (optimizedRouteData.code === "NoRoute")
+    if (data.code === "NoRoute")
       return res.json({
-        id: optimizedRouteData.code,
-        message: optimizedRouteData.message,
+        id: data.code,
+        message: data.message,
       });
 
     res.json({
-      id: optimizedRouteData.code,
+      id: data.code,
       message: "Optimized route found!",
-      route: optimizedRouteData,
+      route: data,
     });
   } catch (err) {
     console.log(err);
