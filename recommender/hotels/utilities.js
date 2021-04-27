@@ -22,10 +22,10 @@ const generateFeatureVector = (hotel) => {
   var amenities = {},
     themes = {},
     accessibility = {},
-    flag;
+    flag,
+    hotelAmenities = hotel["amenities"][0]["listItems"],
+    roomAmenities = hotel["amenities"][1]["listItems"];
   themes["25"] = 0;
-  hotelAmenities = hotel["amenities"][0]["listItems"];
-  roomAmenities = hotel["amenities"][1]["listItems"];
   hotelAmenities.forEach((item) => {
     if (item["heading"] === "Taking the kids?") {
       themes["25"] = 1;
@@ -229,10 +229,9 @@ const generateFeatureVector = (hotel) => {
 // Adds a hotel to the DB if it does not already exist
 export const addHotel = async (hotelId, filters) => {
   //add hotel feature vector to hotel DB
-  const response = await getDetails(hotelId);
-  const hotelDetails = response.data.details;
+  const hotelDetails = await getDetails(hotelId, filters);
 
-  if (!hotelDetails) return;
+  if (hotelDetails.message) return;
 
   const featureVector = generateFeatureVector(hotelDetails, filters);
   await new Hotel(featureVector).save();

@@ -35,8 +35,8 @@ const PlanTripHotelOverview = ({
         </div>
         <div className="hotel__overview-landmarks">
           <ul className="text-muted">
-            {landmarks.map(({ label, distance }) => (
-              <li>
+            {landmarks.map(({ label, distance }, index) => (
+              <li key={index}>
                 {distance} to {label}
               </li>
             ))}

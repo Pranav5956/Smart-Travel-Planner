@@ -24,8 +24,9 @@ export const updateWeight = async (hotelId, cityId, userId, level, filters) => {
     if (!profile) return;
 
     var flag = 0;
-    const amenity_ids = filters["amenity_ids"].split(",");
-    const theme_ids = filters["theme_ids"].split(",");
+    console.log(filters);
+    const amenity_ids = filters["amenity_ids"]?.split(",") || [];
+    const theme_ids = filters["theme_ids"]?.split(",") || [];
 
     profile.hotels.forEach((hotel) => {
       if (hotel.hotelId == hotelId) {

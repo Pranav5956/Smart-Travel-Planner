@@ -6,6 +6,7 @@ import {
   CardTitle,
   FormGroup,
   InputGroup,
+  Spinner,
 } from "reactstrap";
 import CustomInput from "../../components/CustomInput";
 import { Formik, Field, Form } from "formik";
@@ -56,6 +57,7 @@ const Register = () => {
     type: message.messageType,
     message: message.message,
     isOpen: !!message.message.length,
+    loading: false,
   });
 
   useEffect(() => {
@@ -63,6 +65,7 @@ const Register = () => {
       type: message.messageType,
       message: message.message,
       isOpen: !!message.message.length,
+      loading: false,
     });
 
     if (message.messageType === "success") {
@@ -74,6 +77,10 @@ const Register = () => {
   }, [message, dispatch, history]);
 
   const onSubmit = async ({ username, email, password }, { resetForm }) => {
+    setRegisterStatus((registerStatus) => ({
+      ...registerStatus,
+      loading: true,
+    }));
     dispatch(registerUser({ username, email, password }));
     resetForm();
   };
@@ -151,6 +158,12 @@ const Register = () => {
                 component={CustomInput}
               />
             </FormGroup>
+            {registerStatus.loading && (
+              <div className="w-100 d-flex align-items-center justify-content-center mt-2">
+                <Spinner color="primary" size="sm" className="mr-2" />
+                Loggin in user ...
+              </div>
+            )}
             {registerStatus && (
               <Alert
                 color={registerStatus.type}

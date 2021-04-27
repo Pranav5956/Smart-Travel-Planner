@@ -45,6 +45,7 @@
 .plantrip__map {
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
   scroll-snap-align: start;
 }
 
@@ -216,7 +217,7 @@
   border-radius: 1em;
   margin-bottom: 1rem;
   transition: transform 0.2s ease-in-out;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .plantrip__hotel-overview:hover {
@@ -366,7 +367,6 @@
   display: flex;
   flex-direction: row;
   margin: 1rem 3rem;
-  margin-top: 1.75rem;
 }
 
 .plantrip__details-info {
@@ -450,3 +450,99 @@
   font-size: 1.1rem;
   vertical-align: 0.5rem;
 }
+
+.plantrip__details-amenities {
+  display: flex;
+  flex-direction: row;
+  align-items: top;
+  justify-content: center;
+}
+
+.plantrip__details-amenity {
+  flex: 1;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.plantrip__details-pageSubheaders {
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 1.6rem;
+  color: #007bff;
+  font-weight: 700;
+  font-size: 1.75rem;
+  transition: letter-spacing 0.2s ease-in-out;
+}
+
+.plantrip__details-pageSubheaders:hover {
+  letter-spacing: 0.1rem;
+}
+
+.plantrip__details-amenityItems h5 {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.plantrip__details-amenityItems p {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  padding: 0.6rem;
+}
+
+.plantrip__details-amenityItems .card-header {
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.plantrip__details-review {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 2rem;
+  height: 100%;
+}
+
+.plantrip__details-reviewInfo h5 {
+  font-size: 1.6rem;
+  width: fit-content;
+}
+
+.plantrip__details-reviewHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.plantrip__details-reviewstars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 
+.plantrip__Details-reviewsummary {
+  max-height: 40vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+} */
+
+.swiper-container {
+  width: 100% !important;
+}
+
+.swiper-slide {
+  width: 75% !important;
+  height: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .swiper-slide-next,
+.swiper-slide-prev {
+  opacity: 0.5;
+} */

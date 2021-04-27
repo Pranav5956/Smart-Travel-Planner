@@ -1,140 +1,87 @@
-export const starRatingOptions = [
-  { value: 5, label: "5 Stars" },
-  { value: 4, label: "4 Stars" },
-  { value: 3, label: "3 Stars" },
-  { value: 2, label: "2 Stars" },
-  { value: 1, label: "1 Stars" },
-];
-
-export const sortOptions = [
-  { value: "STAR_RATING_HIGHEST_FIRST", label: "Highest Star Rating" },
-  { value: "STAR_RATING_LOWEST_FIRST", label: "Lowest Star Rating" },
-  { value: "PRICE_HIGHEST_FIRST", label: "Highest Pricing" },
-  { value: "PRICE", label: "Lowest Pricing" },
-];
-
-export const amenitiesOptions = [
-  { value: 2063, label: "24-hour front desk" },
-  { value: 537, label: "Smoking areas" },
-  { value: 515, label: "Bar" },
-  { value: 2048, label: "Breakfast included" },
-  { value: 513, label: "Airport Transfers" },
-  { value: 16384, label: "Parking Available" },
-  { value: 519, label: "Business facilities" },
-  { value: 1, label: "Meeting Facilities" },
-  { value: 256, label: "Restaurant" },
-  { value: 128, label: "Pool" },
-  { value: 539, label: "Spa" },
-  { value: 64, label: "Pet friendly" },
-  { value: 527, label: "Wifi Included" },
-  { value: 521, label: "Childcare" },
-  { value: 2, label: "Gym" },
-  { value: 517, label: "Bathtub in room" },
-  { value: 523, label: "Connecting rooms available" },
-  { value: 2112, label: "Casino" },
-  { value: 2097152, label: "Accessibility equipment for the deaf" },
-  { value: 131072, label: "Accessible bathroom" },
-  { value: 524288, label: "Accessible parking" },
-  { value: 65536, label: "Accessible path of travel" },
-  { value: 4194304, label: "Braille or raised signage" },
-  { value: 1048576, label: "In-room accessibility" },
-  { value: 262144, label: "Roll-in shower" },
-  { value: 541, label: "Wheelchair accessible rooms" },
-];
-
-export const themesOptions = [
-  { value: 6, label: "Beach" },
-  { value: 14, label: "Business" },
-  { value: 8, label: "Casino" },
-  { value: 25, label: "Family-friendly" },
-  { value: 15, label: "Luxury" },
-  { value: 27, label: "Spa hotel" },
-];
-
-export const hotelDetail = {
-  name: "Sheraton Grand Chennai Resort & Spa",
-  hotelId: "798096544",
-  cityId: "675398",
-  tagline: [
-    "<b>4.5-star beachfront hotel with spa, near Madras Crocodile Bank Trust </b>",
+{
+  "name": "Sheraton Grand Chennai Resort & Spa",
+  "hotelId": "798096544",
+  "cityId": "675398",
+  "tagline": [
+    "<b>4.5-star beachfront hotel with spa, near Madras Crocodile Bank Trust </b>"
   ],
-  address: "280 ECR, Vedanamelli, Chengalpattu, Tamil Nadu, 603104, India",
-  stars: 4.5,
-  freebies: ["Free WiFi and free parking"],
-  featuredPrice: "$105",
-  avgGuestReviews: 9.2,
-  atAGlance: {
-    keyFacts: {
-      hotelSize: ["This hotel has 125 rooms"],
-      arrivingLeaving: [
+  "address": "280 ECR, Vedanamelli, Chengalpattu, Tamil Nadu, 603104, India",
+  "stars": 4.5,
+  "freebies": ["Free WiFi and free parking"],
+  "featuredPrice": "$105",
+  "avgGuestReviews": 9.2,
+  "atAGlance": {
+    "keyFacts": {
+      "hotelSize": ["This hotel has 125 rooms"],
+      "arrivingLeaving": [
         "Check-in time 3:00 PM-noon",
         "Check-out time is  noon",
-        "Express check-in/out",
+        "Express check-in/out"
       ],
-      specialCheckInInstructions: [
-        "To make arrangements for check-in please contact the property at least 24 hours before arrival using the information on the booking confirmation. Guests planning to arrive outside of normal check-in hours must contact the property in advance for check-in instructions. Front desk staff will greet guests on arrival. ",
+      "specialCheckInInstructions": [
+        "To make arrangements for check-in please contact the property at least 24 hours before arrival using the information on the booking confirmation. Guests planning to arrive outside of normal check-in hours must contact the property in advance for check-in instructions. Front desk staff will greet guests on arrival. "
       ],
-      requiredAtCheckIn: [
+      "requiredAtCheckIn": [
         "Credit card, debit card, or cash deposit required for incidental charges",
         "Government-issued photo ID may be required",
-        "Minimum check-in age is 17",
-      ],
+        "Minimum check-in age is 17"
+      ]
     },
-    travellingOrInternet: {
-      travelling: {
-        children: [
+    "travellingOrInternet": {
+      "travelling": {
+        "children": [
           "One child stays free when occupying the parent or guardian's room, using existing bedding",
           "<em>Free</em> babysitting/childcare",
-          "Children's club*",
+          "Children's club*"
         ],
-        pets: ["No pets or service animals allowed"],
-        extraPeople: [],
+        "pets": ["No pets or service animals allowed"],
+        "extraPeople": []
       },
-      internet: [
+      "internet": [
         "Free WiFi in public areas",
-        "Free WiFi and wired Internet access in rooms",
-      ],
+        "Free WiFi and wired Internet access in rooms"
+      ]
     },
-    transportAndOther: {
-      transport: {
-        transfers: [],
-        parking: [
+    "transportAndOther": {
+      "transport": {
+        "transfers": [],
+        "parking": [
           "<em>Free</em> onsite self parking",
           "<em>Free</em> onsite valet parking",
-          "Wheelchair-accessible parking and van parking on site",
+          "Wheelchair-accessible parking and van parking on site"
         ],
-        offsiteTransfer: [],
+        "offsiteTransfer": []
       },
-      otherInformation: ["No alcohol allowed onsite"],
-      otherInclusions: [],
-    },
+      "otherInformation": ["No alcohol allowed onsite"],
+      "otherInclusions": []
+    }
   },
-  amenities: [
+  "amenities": [
     {
-      heading: "In the hotel",
-      listItems: [
+      "heading": "In the hotel",
+      "listItems": [
         {
-          heading: "Taking the kids?",
-          listItems: [
+          "heading": "Taking the kids?",
+          "listItems": [
             "Children's club (surcharge)",
-            "Supervised childcare/activities",
-          ],
+            "Supervised childcare/activities"
+          ]
         },
         {
-          heading: "Food and drink",
-          listItems: [
+          "heading": "Food and drink",
+          "listItems": [
             "Continental breakfast daily (surcharge)",
             "3 restaurants",
             "Bar/lounge",
             "Coffee shop/café",
             "Snack bar/deli",
             "24-hour room service",
-            "Barbecue grills",
-          ],
+            "Barbecue grills"
+          ]
         },
         {
-          heading: "Things to do",
-          listItems: [
+          "heading": "Things to do",
+          "listItems": [
             "Free beach cabanas",
             "Beach sun loungers",
             "Free pool cabanas",
@@ -152,22 +99,22 @@ export const hotelDetail = {
             "Pool umbrellas",
             "Beach towels",
             "Arcade/game room",
-            "Billiards or pool table",
-          ],
+            "Billiards or pool table"
+          ]
         },
         {
-          heading: "Working away",
-          listItems: [
+          "heading": "Working away",
+          "listItems": [
             "Business center",
             "Number of meeting rooms -  5",
             "Conference space",
             "Conference space size (feet) -  36618",
-            "Conference space size (meters) -  3402",
-          ],
+            "Conference space size (meters) -  3402"
+          ]
         },
         {
-          heading: "Services",
-          listItems: [
+          "heading": "Services",
+          "listItems": [
             "24-hour front desk",
             "Concierge services",
             "Tours/ticket assistance",
@@ -177,12 +124,12 @@ export const hotelDetail = {
             "Free newspapers in lobby",
             "Luggage storage",
             "Wedding services",
-            "Multilingual staff",
-          ],
+            "Multilingual staff"
+          ]
         },
         {
-          heading: "Facilities",
-          listItems: [
+          "heading": "Facilities",
+          "listItems": [
             "Number of buildings/towers -  1",
             "Year Built -  2018",
             "Elevator",
@@ -191,12 +138,12 @@ export const hotelDetail = {
             "Garden",
             "Picnic area",
             "Terrace",
-            "Television in common areas",
-          ],
+            "Television in common areas"
+          ]
         },
         {
-          heading: "Accessibility",
-          listItems: [
+          "heading": "Accessibility",
+          "listItems": [
             "Braille or raised signage",
             "Accessible bathroom",
             "In-room accessibility",
@@ -221,99 +168,97 @@ export const hotelDetail = {
             "Wheelchair-accessible bathroom vanity",
             "Grab bar - near toilet",
             "Grab bar - in shower",
-            "Bathroom emergency pull cord",
-          ],
+            "Bathroom emergency pull cord"
+          ]
         },
         {
-          heading: "Languages Spoken",
-          listItems: ["English", "Hindi"],
-        },
-      ],
+          "heading": "Languages Spoken",
+          "listItems": ["English", "Hindi"]
+        }
+      ]
     },
     {
-      heading: "In the room",
-      listItems: [
+      "heading": "In the room",
+      "listItems": [
         {
-          heading: "Home comforts",
-          listItems: [
+          "heading": "Home comforts",
+          "listItems": [
             "Air conditioning",
             "Ceiling fan",
             "Coffee/tea maker",
             "Slippers",
-            "Iron/ironing board",
-          ],
+            "Iron/ironing board"
+          ]
         },
         {
-          heading: "Sleep well",
-          listItems: [
+          "heading": "Sleep well",
+          "listItems": [
             "Hypo-allergenic bedding available",
             "Soundproofed rooms",
             "Turndown service",
-            "Sleep Number by Select Comfort mattress",
-          ],
+            "Sleep Number by Select Comfort mattress"
+          ]
         },
         {
-          heading: "Things to enjoy",
-          listItems: ["Balcony"],
+          "heading": "Things to enjoy",
+          "listItems": ["Balcony"]
         },
         {
-          heading: "Freshen up",
-          listItems: [
+          "heading": "Freshen up",
+          "listItems": [
             "Separate bathtub and shower",
             "Designer toiletries",
-            "Hair dryer",
-          ],
+            "Hair dryer"
+          ]
         },
         {
-          heading: "Be entertained",
-          listItems: ["49-inch flat-screen TV", "Premium TV channels"],
+          "heading": "Be entertained",
+          "listItems": ["49-inch flat-screen TV", "Premium TV channels"]
         },
         {
-          heading: "Stay connected",
-          listItems: ["Desk", "Free newspaper", "Free WiFi", "Phone"],
+          "heading": "Stay connected",
+          "listItems": ["Desk", "Free newspaper", "Free WiFi", "Phone"]
         },
         {
-          heading: "Food and drink",
-          listItems: ["Free bottled water"],
+          "heading": "Food and drink",
+          "listItems": ["Free bottled water"]
         },
         {
-          heading: "More",
-          listItems: [
+          "heading": "More",
+          "listItems": [
             "Daily housekeeping",
             "In-room safe",
-            "Connecting/adjoining rooms available",
-          ],
-        },
-      ],
-    },
+            "Connecting/adjoining rooms available"
+          ]
+        }
+      ]
+    }
   ],
-  optionalExtras: [
+  "optionalExtras": [
     "<p><strong>Late check-out</strong> can be arranged for an extra charge (subject to availability, amount varies)</p>",
     "<p><strong>Spa access</strong> is available for an extra charge of INR 3000 per stay</p>",
     "<p><strong>Rollaway</strong> beds are available for INR 2000.0 per night</p>",
     "<p><strong>Continental breakfast</strong> is offered for an extra charge of INR 550 per person (approximately)</p>",
     "<p><strong>Children's club</strong> access is available for an extra charge</p>",
-    "<p><strong>Laundry facilities</strong> are available for an extra charge of INR 1000 per day</p>",
+    "<p><strong>Laundry facilities</strong> are available for an extra charge of INR 1000 per day</p>"
   ],
-  specialFeatures: {
-    sections: [
+  "specialFeatures": {
+    "sections": [
       {
-        heading: "Spa",
-        freeText:
-          "<strong>Shine Spa</strong> has 5 treatment rooms. Services include deep-tissue massages, hot stone massages, Swedish massages, and Thai massages. A variety of treatment therapies are provided, including aromatherapy, Ayurvedic, and reflexology. The spa is equipped with a mud bath and a steam room. <p>The spa is open daily. Guests under 10 years old are not allowed in the spa. </p>",
-        listItems: [],
-        subsections: [],
+        "heading": "Spa",
+        "freeText": "<strong>Shine Spa</strong> has 5 treatment rooms. Services include deep-tissue massages, hot stone massages, Swedish massages, and Thai massages. A variety of treatment therapies are provided, including aromatherapy, Ayurvedic, and reflexology. The spa is equipped with a mud bath and a steam room. <p>The spa is open daily. Guests under 10 years old are not allowed in the spa. </p>",
+        "listItems": [],
+        "subsections": []
       },
       {
-        heading: "Dining",
-        freeText:
-          "<strong>The Reef</strong> - This restaurant specializes in international cuisine and serves breakfast, brunch, lunch, and dinner. A children's menu is available. Open 24 hours. <br/>\n<p></p><strong>Pelican Deck</strong> - This restaurant overlooks the ocean and garden and specializes in barbecue. Guests can enjoy alfresco dining (weather permitting). Open select days. <br/>\n<p></p><strong>Pintail Lounge</strong> - Onsite bar. Open daily. <br/>\n<p></p><strong>C Salt - By the Bay</strong> - This restaurant serves dinner only. Open daily. ",
-        listItems: [],
-        subsections: [],
-      },
-    ],
+        "heading": "Dining",
+        "freeText": "<strong>The Reef</strong> - This restaurant specializes in international cuisine and serves breakfast, brunch, lunch, and dinner. A children's menu is available. Open 24 hours. <br/>\n<p></p><strong>Pelican Deck</strong> - This restaurant overlooks the ocean and garden and specializes in barbecue. Guests can enjoy alfresco dining (weather permitting). Open select days. <br/>\n<p></p><strong>Pintail Lounge</strong> - Onsite bar. Open daily. <br/>\n<p></p><strong>C Salt - By the Bay</strong> - This restaurant serves dinner only. Open daily. ",
+        "listItems": [],
+        "subsections": []
+      }
+    ]
   },
-  photos: [
+  "photos": [
     "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/26f9aa7a_z.jpg",
     "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/5a83f555_z.jpg",
     "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/2f690859_z.jpg",
@@ -397,60 +342,56 @@ export const hotelDetail = {
     "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/ee553941_z.jpg",
     "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/6cca3e8f_z.jpg",
     "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/d8bb097b_z.jpg",
-    "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/078b782b_z.jpg",
+    "https://exp.cdn-hotels.com/hotels/25000000/24910000/24909300/24909267/078b782b_z.jpg"
   ],
-  reviews: {
-    overallRating: 9.2,
-    hotelService: 9.4,
-    roomComfort: 9.8,
-    hotelCondition: 9.6,
-    cleanliness: 9.4,
-    neighbourhood: 8.8,
-    reviews: [
+  "reviews": {
+    "overallRating": 9.2,
+    "hotelService": 9.4,
+    "roomComfort": 9.8,
+    "hotelCondition": 9.6,
+    "cleanliness": 9.4,
+    "neighbourhood": 8.8,
+    "reviews": [
       {
-        recommendedBy: "Samuel Vijay",
-        rating: 10,
-        formattedRating: "10.0",
-        qualitativeBadgeText: "Exceptional",
-        postedOn: "1618444800000",
-        title: "If you want to be pampered...choose Sheraton Grand",
-        summary:
-          "If you want to be waited hand and foot and feel the need to pampered for few days, just do yourself a favor and book Sheraton Grand, you will not be disappointed. I would have to say that this is arguably the best hotel in Chennai at the moment and if you can spar few extra bucks upgrade to the sea view rooms to indulge in a get away that will leave you with fond memories. \n\nMy family thoroughly enjoyed their stay and can't wait to be back. The rooms are well appointed and the level of service is what makes Sheraton stand out compared to other peroperties......",
-        reviewType: "hr",
+        "recommendedBy": "Samuel Vijay",
+        "rating": 10,
+        "formattedRating": "10.0",
+        "qualitativeBadgeText": "Exceptional",
+        "postedOn": "1618444800000",
+        "title": "If you want to be pampered...choose Sheraton Grand",
+        "summary": "If you want to be waited hand and foot and feel the need to pampered for few days, just do yourself a favor and book Sheraton Grand, you will not be disappointed. I would have to say that this is arguably the best hotel in Chennai at the moment and if you can spar few extra bucks upgrade to the sea view rooms to indulge in a get away that will leave you with fond memories. \n\nMy family thoroughly enjoyed their stay and can't wait to be back. The rooms are well appointed and the level of service is what makes Sheraton stand out compared to other peroperties......",
+        "reviewType": "hr"
       },
       {
-        recommendedBy: "",
-        rating: 10,
-        formattedRating: "10.0",
-        qualitativeBadgeText: "Exceptional",
-        postedOn: "1612742400000",
-        title: "",
-        summary:
-          "We were a big group with 7 Adults & 3 Children. It was a wonderful experience with Sheraton Grand Chennai Resort & Spa. Totally recommend this place for a relaxing vacation with Beach access & a clean swimming pool. Breakfast was great with lot of variety.",
-        reviewType: "er",
+        "recommendedBy": "",
+        "rating": 10,
+        "formattedRating": "10.0",
+        "qualitativeBadgeText": "Exceptional",
+        "postedOn": "1612742400000",
+        "title": "",
+        "summary": "We were a big group with 7 Adults & 3 Children. It was a wonderful experience with Sheraton Grand Chennai Resort & Spa. Totally recommend this place for a relaxing vacation with Beach access & a clean swimming pool. Breakfast was great with lot of variety.",
+        "reviewType": "er"
       },
       {
-        recommendedBy: "Sudarshan Paul",
-        rating: 6,
-        formattedRating: "6.0",
-        qualitativeBadgeText: "Good",
-        postedOn: "1546473600000",
-        title: "Nice property, needs fixes and staff training",
-        summary:
-          "Large sea-shore property with sprawling grounds, convenient to Mahabalipuram monuments. Helpful staff. \r\nI am a Marriott Pt member who got upgraded and was given freebies, which I am thankful for. This is my first negative review about a Marriott property.\r\nFour reasons for disappointment : \r\n1. :Sunday brunch : After the lunch was mostly laid out, the food display area floor and an in-floor gutter were being cleaned, creating a foul stench and health risk! The chef was very nonchalant about it!\r\n2. The light switches in my suite took a PhD to learn to operate, an 'engineer' sent to help could turn off one light only by cutting the wire to it and asked me to sleep with the other light on. \r\n3. It is a pain to find the way to the Garden Level rooms. The one small elevator to service that floor has cleaning carts parked to it.\r\n4. New Year Eve dinner buffet was late by 1.5 hours, the New Years Day buffet by on hour.",
-        reviewType: "hr",
+        "recommendedBy": "Sudarshan Paul",
+        "rating": 6,
+        "formattedRating": "6.0",
+        "qualitativeBadgeText": "Good",
+        "postedOn": "1546473600000",
+        "title": "Nice property, needs fixes and staff training",
+        "summary": "Large sea-shore property with sprawling grounds, convenient to Mahabalipuram monuments. Helpful staff. \r\nI am a Marriott Pt member who got upgraded and was given freebies, which I am thankful for. This is my first negative review about a Marriott property.\r\nFour reasons for disappointment : \r\n1. :Sunday brunch : After the lunch was mostly laid out, the food display area floor and an in-floor gutter were being cleaned, creating a foul stench and health risk! The chef was very nonchalant about it!\r\n2. The light switches in my suite took a PhD to learn to operate, an 'engineer' sent to help could turn off one light only by cutting the wire to it and asked me to sleep with the other light on. \r\n3. It is a pain to find the way to the Garden Level rooms. The one small elevator to service that floor has cleaning carts parked to it.\r\n4. New Year Eve dinner buffet was late by 1.5 hours, the New Years Day buffet by on hour.",
+        "reviewType": "hr"
       },
       {
-        recommendedBy: "Girishwar",
-        rating: 6,
-        formattedRating: "6.0",
-        qualitativeBadgeText: "Good",
-        postedOn: "1546041600000",
-        title: "",
-        summary:
-          "Food was good . new property so everything is nice and clear . Check out  was  slow , checkin was even slower . Luggage handling was terrible. Had to wait nearly an hour to get luggage in the room . While checking out nobody came to pick the luggage up and after repeating requests twice , we decided to carry the luggage ourselves. Two front office ladies , came running to help . There is a intent to do a good job but then there is a proces and communication issue .",
-        reviewType: "er",
-      },
-    ],
-  },
-};
+        "recommendedBy": "Girishwar",
+        "rating": 6,
+        "formattedRating": "6.0",
+        "qualitativeBadgeText": "Good",
+        "postedOn": "1546041600000",
+        "title": "",
+        "summary": "Food was good . new property so everything is nice and clear . Check out  was  slow , checkin was even slower . Luggage handling was terrible. Had to wait nearly an hour to get luggage in the room . While checking out nobody came to pick the luggage up and after repeating requests twice , we decided to carry the luggage ourselves. Two front office ladies , came running to help . There is a intent to do a good job but then there is a proces and communication issue .",
+        "reviewType": "er"
+      }
+    ]
+  }
+}

@@ -61,65 +61,65 @@ const PlanTrip = () => {
 
   return (
     <div className="plantrip">
-      <div className="plantrip__locations">
-        <div className="plantrip__locations-controls">
-          <Form onSubmit={addStop}>
-            <FormGroup className="plantrip__input-readonly">
-              <Input
-                type="text"
-                value={start.name}
-                readOnly
-                onClick={() => updateSelectedStop(start)}
-                role="button"
-              />
-            </FormGroup>
-            {stops && (
-              <FormGroup className="plantrip__input">
-                {stops.map((stop, index) => (
-                  <div key={index} className="plantrip__input-stops">
-                    <Input
-                      type="text"
-                      value={stop.name || ""}
-                      readOnly
-                      onClick={() => updateSelectedStop(stop)}
-                      role="button"
-                    />
-                    <Button
-                      color="danger"
-                      size="md"
-                      onClick={() => removeStop(index)}
-                      className="rounded-pill px-3">
-                      <IoClose size={20} />
-                    </Button>
-                  </div>
-                ))}
-              </FormGroup>
-            )}
-            <FormGroup className="plantrip__geocoder">
-              <div
-                className="plantrip__geocoder-container"
-                ref={geocoderContainerRef}></div>
-              <Button
-                color="primary"
-                className="plantrip__btn-add"
-                title="Add stop">
-                <FaMapMarkerAlt /> Add location
-              </Button>
-            </FormGroup>
-
-            <FormGroup className="plantrip__input-readonly">
-              <Input
-                type="text"
-                value={destination.name}
-                readOnly
-                onClick={() => updateSelectedStop(destination)}
-                role="button"
-              />
-            </FormGroup>
-          </Form>
-        </div>
-      </div>
       <div className="plantrip__map">
+        <div className="plantrip__locations">
+          <div className="plantrip__locations-controls">
+            <Form onSubmit={addStop}>
+              <FormGroup className="plantrip__input-readonly">
+                <Input
+                  type="text"
+                  value={start.name}
+                  readOnly
+                  onClick={() => updateSelectedStop(start)}
+                  role="button"
+                />
+              </FormGroup>
+              {stops && (
+                <FormGroup className="plantrip__input">
+                  {stops.map((stop, index) => (
+                    <div key={index} className="plantrip__input-stops">
+                      <Input
+                        type="text"
+                        value={stop.name || ""}
+                        readOnly
+                        onClick={() => updateSelectedStop(stop)}
+                        role="button"
+                      />
+                      <Button
+                        color="danger"
+                        size="md"
+                        onClick={() => removeStop(index)}
+                        className="rounded-pill px-3">
+                        <IoClose size={20} />
+                      </Button>
+                    </div>
+                  ))}
+                </FormGroup>
+              )}
+              <FormGroup className="plantrip__geocoder">
+                <div
+                  className="plantrip__geocoder-container"
+                  ref={geocoderContainerRef}></div>
+                <Button
+                  color="primary"
+                  className="plantrip__btn-add"
+                  title="Add stop">
+                  <FaMapMarkerAlt /> Add location
+                </Button>
+              </FormGroup>
+
+              <FormGroup className="plantrip__input-readonly">
+                <Input
+                  type="text"
+                  value={destination.name}
+                  readOnly
+                  onClick={() => updateSelectedStop(destination)}
+                  role="button"
+                />
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
         <Map
           start={start}
           destination={destination}

@@ -1,6 +1,9 @@
 import express from "express";
 import { getOverview, getDetails } from "../../api/hotels.js";
-import { recommendHotels } from "../../recommender/hotels/recommender.js";
+import {
+  recommendHotels,
+  updateWeight,
+} from "../../recommender/hotels/recommender.js";
 
 const router = express.Router();
 
@@ -21,6 +24,10 @@ router.post("/:hotelId", async (req, res) => {
   const { hotelId } = req.params;
   const { filters } = req.body;
   const data = await getDetails(hotelId, filters);
+
+  // Update weight to be set to 0.1 on accessing details of the hotel
+  await updateWeight(hotelId, data.cityId, req.user.id, 0.1, filters);
+
   res.json(data);
 });
 

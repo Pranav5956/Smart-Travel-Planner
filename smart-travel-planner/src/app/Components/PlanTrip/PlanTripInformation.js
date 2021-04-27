@@ -162,7 +162,7 @@ const PlanTripInformation = ({ stops }) => {
           isOpen={selectedHotel.isOpen}
           toggle={closeHotelModal}
           hotelId={selectedHotel.hotelId}
-          filters={filterQueries}
+          filters={formatFilters(filterQueries)}
           unsetHotelDetails={unsetHotelDetails}
         />
       )}
@@ -181,6 +181,16 @@ const PlanTripInformation = ({ stops }) => {
             </ListGroupItem>
           ))}
         </ListGroup>
+        <Button
+          color="primary"
+          onClick={() =>
+            setSelectedHotel((selectedHotel) => ({
+              hotelId: 1,
+              isOpen: true,
+            }))
+          }>
+          Open Modal
+        </Button>
       </div>
       <div className="plantrip__info-main">
         <Nav tabs>

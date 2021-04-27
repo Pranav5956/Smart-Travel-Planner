@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 
 import { checkForAuthentication } from "./auth.middleware.js";
 import { initializeUserProfile } from "../../recommender/hotels/utilities.js";
+import { updateInterestVector } from "../../recommender/hotels/recommender.js";
 
 const router = express.Router();
 
@@ -91,6 +92,9 @@ router.post("/login", (req, res) => {
             },
             (err, token) => {
               if (err) return res.status(500).json({ error: err.message });
+
+              // Update user's interest vector everytime before login
+              updateInterestVector(user._id);
 
               res.json({
                 token,

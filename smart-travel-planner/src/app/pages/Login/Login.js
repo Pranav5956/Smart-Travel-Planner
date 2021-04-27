@@ -9,6 +9,7 @@ import {
   CardTitle,
   FormGroup,
   InputGroup,
+  Spinner,
 } from "reactstrap";
 import {
   clearAuthMessage,
@@ -45,6 +46,7 @@ const Login = () => {
     type: message.messageType,
     message: message.message,
     isOpen: !!message.message.length,
+    loading: false,
   });
 
   useEffect(() => {
@@ -52,6 +54,7 @@ const Login = () => {
       type: message.messageType,
       message: message.message,
       isOpen: !!message.message.length,
+      loading: false,
     });
 
     if (message.messageType === "success") {
@@ -63,6 +66,7 @@ const Login = () => {
   }, [message, dispatch, history]);
 
   const onSubmit = async ({ username, password }, { resetForm }) => {
+    setLoginStatus((loginStatus) => ({ ...loginStatus, loading: true }));
     dispatch(loginUser({ username, password }));
     resetForm();
   };
@@ -108,6 +112,12 @@ const Login = () => {
                 />
               </InputGroup>
             </FormGroup>
+            {loginStatus.loading && (
+              <div className="w-100 d-flex align-items-center justify-content-center mt-2">
+                <Spinner color="primary" size="sm" className="mr-2" />
+                Loggin in user ...
+              </div>
+            )}
             {loginStatus && (
               <Alert
                 color={loginStatus.type}
@@ -122,7 +132,11 @@ const Login = () => {
               </Alert>
             )}
             <FormGroup className="d-flex align-items-center justify-content-center mt-4">
-              <Button color="primary" className="px-5 py-2" type="submit">
+              <Button
+                color="primary"
+                className="px-4 py-2"
+                type="submit"
+                disabled={loginStatus.loading}>
                 Login
               </Button>
             </FormGroup>
