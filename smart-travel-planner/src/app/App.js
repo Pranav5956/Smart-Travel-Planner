@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { loadUserOnStart } from "./redux/features/Auth";
 
 import "./App.scss";
+import Blogs from "./pages/Blogs/Blogs";
 
 function App() {
   const theme = useSelector(selectTheme);
@@ -31,6 +32,7 @@ function App() {
       <Router>
         <Switch>
           <ProtectedRoute path="/plantrip" component={PlanTrip} />
+          <ProtectedRoute path="/blogs" component={Blogs} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path={["/", "/home"]} component={Home} />

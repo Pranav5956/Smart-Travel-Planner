@@ -83,8 +83,7 @@ export const updateInterestVector = async (userId) => {
     } else count += 1;
   });
   if (timeWeight.length == 1) timeWeight = [1];
-  else
-    timeWeight = scaler.fit_transform(timeWeight, (max_ = 0.9), (min_ = 0.1));
+  else timeWeight = scaler.fit_transform(timeWeight, 0.1, 0.9);
 
   var fVecs = await Hotel.find(
     { hotelId: { $in: hotelIds } },

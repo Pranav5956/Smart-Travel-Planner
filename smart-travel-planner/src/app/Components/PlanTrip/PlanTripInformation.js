@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   Col,
@@ -10,6 +10,8 @@ import {
   ListGroup,
   ListGroupItem,
   ListGroupItemText,
+  Modal,
+  ModalBody,
   Nav,
   NavItem,
   NavLink,
@@ -21,10 +23,14 @@ import moment from "moment";
 import Select from "react-select";
 import Slider from "../Slider";
 import PlanTripHotelOverview from "./PlanTripHotelOverview";
+import PlanTripPlacesOverview from "./PlanTripPlacesOverview";
 import axios from "../../axios";
 
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
+import DropdownTreeSelect from "react-dropdown-tree-select";
+import "react-dropdown-tree-select/dist/styles.css";
 
 // import { overview } from "../../references/addHotels";
 
@@ -33,6 +39,7 @@ import {
   starRatingOptions,
   amenitiesOptions,
   themesOptions,
+  poiFilterOptions,
 } from "../../data/QueryOptions";
 import PlanTripHotelDetails from "./PlanTripHotelDetails";
 
@@ -65,6 +72,21 @@ const formatFilters = (filters) => {
   return formattedFilters;
 };
 
+// const getLeafNodes = (nodes) => {
+//   let leafNodes = [];
+
+//   while (nodes.length > 0) {
+//     if (nodes[0].hasOwnProperty("_children")) {
+//       nodes[0]._children.forEach((child) => nodes.push(child));
+//       nodes.shift();
+//     } else {
+//       leafNodes.push(nodes.shift());
+//     }
+//   }
+
+//   return leafNodes;
+// };
+
 const customSelectStyle = {
   multiValue: (provided, state) => ({
     ...provided,
@@ -89,11 +111,25 @@ const PlanTripInformation = ({ stops }) => {
     isOpen: false,
   });
   const [activeTab, updateActiveTab] = useState("1");
+
   const [hotelInfo, setHotelInfo] = useState({
     message: "",
     hotels: [],
     queried: false,
   });
+  const [placesInfo, setPlacesInfo] = useState({
+    message: "",
+    places: [],
+    queried: false,
+  });
+  const [placesCategories, setPlacesCategories] = useState({
+    message: "",
+    categories: [],
+    selectedCategories: {},
+    isOpen: false,
+    queried: false,
+  });
+
   const [filterQueries, updateFilterQueries] = useState({
     checkin_date: getFormattedDate(),
     checkout_date: getFormattedDate(1),
@@ -105,6 +141,11 @@ const PlanTripInformation = ({ stops }) => {
     star_rating_ids: starRatingOptions,
     amenity_ids: [],
     theme_ids: [],
+  });
+  const [poiQueries, updatePoiQueries] = useState({
+    radius: 20000,
+    categories: "",
+    query: "",
   });
 
   useEffect(() => {
@@ -143,8 +184,68 @@ const PlanTripInformation = ({ stops }) => {
     setHotelInfo({ message: "", hotels, queried: true });
   };
 
+  const getPlaces = async (categories) => {
+    setPlacesInfo({
+      message: `Looking for places in "${stops[selectedStop].name}"`,
+      places: [],
+      queried: false,
+    });
+    const response = await axios.post(
+      "/api/places",
+      {
+        city: stops[selectedStop].name.split(", ")[0],
+        radius: poiQueries.radius,
+        categories: categories || poiQueries.categories,
+        query: poiQueries.query,
+      },
+      {
+        headers: { "x-auth-token": localStorage.getItem("token") },
+      }
+    );
+    const places = response.data;
+    setPlacesInfo({ message: "", places, queried: true });
+  };
+
+  const closePlacesRecommendation = () => {
+    setPlacesCategories((placesCategories) => ({
+      ...placesCategories,
+      isOpen: false,
+      queried: false,
+      categories: [],
+    }));
+  };
+
+  const getPlacesRecommendation = async () => {
+    setPlacesCategories({
+      message: "Searching for recommended categories...",
+      categories: [],
+      selectedCategories: {},
+      isOpen: true,
+      queried: false,
+    });
+    const response = await axios.post(
+      "/api/places/recommend",
+      {},
+      {
+        headers: { "x-auth-token": localStorage.getItem("token") },
+      }
+    );
+    const categories = response.data;
+    setPlacesCategories((placesCategories) => ({
+      ...placesCategories,
+      message: "",
+      categories,
+      selectedCategories: categories.reduce(
+        (dict, cat) => ({ ...dict, [cat]: false }),
+        {}
+      ),
+      queried: true,
+    }));
+  };
+
   useEffect(() => {
     getHotels();
+    getPlaces();
   }, [selectedStop]);
 
   const closeHotelModal = () =>
@@ -166,6 +267,79 @@ const PlanTripInformation = ({ stops }) => {
           unsetHotelDetails={unsetHotelDetails}
         />
       )}
+      {placesCategories.categories.length > 0 && (
+        <Modal
+          className="plantrip__info-placesCategories"
+          centered
+          fade
+          isOpen={placesCategories.isOpen}
+          toggle={closePlacesRecommendation}>
+          <ModalBody>
+            {placesCategories.queried ? (
+              <div>
+                <h5>Choose from any of your recommended categories</h5>
+                {placesCategories.categories.map((category) => (
+                  <p
+                    role="button"
+                    onClick={() => {
+                      setPlacesCategories((placesCategories) => ({
+                        ...placesCategories,
+                        selectedCategories: {
+                          ...placesCategories.selectedCategories,
+                          [category]: !placesCategories.selectedCategories[
+                            category
+                          ],
+                        },
+                      }));
+                    }}
+                    className={`plantrip__info-category ${
+                      placesCategories.selectedCategories[category] &&
+                      "plantrip__info-category--active"
+                    }`}>
+                    {category.replace("_", " ")}
+                  </p>
+                ))}
+                <div className="plantrip__info-categoryBtns">
+                  <Button
+                    className="ml-auto mr-1"
+                    color="success"
+                    onClick={() => {
+                      const selectedCategories = Object.keys(
+                        placesCategories.selectedCategories
+                      )
+                        .filter(
+                          (category) =>
+                            placesCategories.selectedCategories[category]
+                        )
+                        .join(",");
+                      getPlaces(selectedCategories);
+                      closePlacesRecommendation();
+                    }}>
+                    Get recommendations
+                  </Button>
+                  <Button
+                    color="danger"
+                    onClick={closePlacesRecommendation}
+                    className="mr-auto ml-1">
+                    Back
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="plantrip__info--loader">
+                <Loader
+                  type="ThreeDots"
+                  color="#007BFF"
+                  height={100}
+                  width={100}
+                  className="loader-icon"
+                />
+                <p>{placesCategories.message}</p>
+              </div>
+            )}
+          </ModalBody>
+        </Modal>
+      )}
       <div className="plantrip__info-sidebar">
         <ListGroup className="plantrip__sidebar-items">
           <h2 className="pb-3 pl-4">Waypoints</h2>
@@ -181,7 +355,7 @@ const PlanTripInformation = ({ stops }) => {
             </ListGroupItem>
           ))}
         </ListGroup>
-        <Button
+        {/* <Button
           color="primary"
           onClick={() =>
             setSelectedHotel((selectedHotel) => ({
@@ -190,7 +364,7 @@ const PlanTripInformation = ({ stops }) => {
             }))
           }>
           Open Modal
-        </Button>
+        </Button> */}
       </div>
       <div className="plantrip__info-main">
         <Nav tabs>
@@ -211,7 +385,7 @@ const PlanTripInformation = ({ stops }) => {
         </Nav>
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
-            <div className="plantrip__info-hotelsContainer">
+            <div className="plantrip__info--container">
               <div className="plantrip__info-hotels">
                 {hotelInfo.hotels.length
                   ? hotelInfo.hotels.map((item, index) => (
@@ -224,12 +398,12 @@ const PlanTripInformation = ({ stops }) => {
                       />
                     ))
                   : hotelInfo.queried && (
-                      <div className="plantrip__info-hotels--loader">
+                      <div className="plantrip__info--loader">
                         <p>No information found with the selected filters!</p>
                       </div>
                     )}
                 {hotelInfo.message && (
-                  <div className="plantrip__info-hotels--loader">
+                  <div className="plantrip__info--loader">
                     <Loader
                       type="ThreeDots"
                       color="#007BFF"
@@ -241,11 +415,11 @@ const PlanTripInformation = ({ stops }) => {
                   </div>
                 )}
               </div>
-              <div className="plantrip__info-hotelQuery">
-                <div className="plantrip__info-hotelQuery--header">
+              <div className="plantrip__info-query">
+                <div className="plantrip__info-query--header">
                   <h4 className="hotelQuery-heading">Find what suits you</h4>
                 </div>
-                <div className="plantrip__info-hotelQuery--buttons">
+                <div className="plantrip__info-query--buttons">
                   <Button color="primary" onClick={() => getHotels()}>
                     Filter
                   </Button>
@@ -253,7 +427,7 @@ const PlanTripInformation = ({ stops }) => {
                     Recommend
                   </Button>
                 </div>
-                <div className="plantrip__info-hotelQuery--queries">
+                <div className="plantrip__info-query--queries">
                   <Form>
                     <FormGroup>
                       <Label for="check-in">Check-In Date</Label>
@@ -316,10 +490,13 @@ const PlanTripInformation = ({ stops }) => {
                       <Slider
                         min={filterQueries.price_min}
                         max={filterQueries.price_max}
+                        minValue={0}
+                        maxValue={10}
                         onChange={([min, max]) => {
                           setQuery("price_min", min);
                           setQuery("price_max", max);
                         }}
+                        pearling
                       />
                     </FormGroup>
                     <FormGroup>
@@ -371,7 +548,122 @@ const PlanTripInformation = ({ stops }) => {
             </div>
           </TabPane>
           <TabPane tabId="2">
-            Fetching information about Places of Interest
+            <div className="plantrip__info--container">
+              <div className="plantrip__info-places">
+                {placesInfo.places.length
+                  ? placesInfo.places.slice(0, 40).map((item, index) => (
+                      // <PlanTripHotelOverview
+                      //   key={`overview-${index}`}
+                      //   onClickDetails={() => {
+                      //     setSelectedHotel({ hotelId: item.id, isOpen: true });
+                      //   }}
+                      //   {...item}
+                      // />
+                      <PlanTripPlacesOverview
+                        key={item.id}
+                        name={item.properties.name}
+                        rating={item.properties.rate}
+                        thumbnail={item.thumbnail}
+                        distance={item.properties.dist}
+                        tags={item.properties.kinds}
+                      />
+                    ))
+                  : placesInfo.queried && (
+                      <div className="plantrip__info--loader">
+                        <p>No information found with the selected filters!</p>
+                      </div>
+                    )}
+                {placesInfo.message && (
+                  <div className="plantrip__info--loader">
+                    <Loader
+                      type="ThreeDots"
+                      color="#007BFF"
+                      height={100}
+                      width={100}
+                      className="loader-icon"
+                    />
+                    <p>{placesInfo.message}</p>
+                  </div>
+                )}
+              </div>
+              <div className="plantrip__info-query">
+                <div className="plantrip__info-query--header">
+                  <h4 className="hotelQuery-heading">Find what suits you</h4>
+                </div>
+                <div className="plantrip__info-query--buttons">
+                  <Button color="primary" onClick={() => getPlaces()}>
+                    Filter
+                  </Button>
+                  <Button
+                    color="danger"
+                    onClick={() => getPlacesRecommendation()}>
+                    Recommend
+                  </Button>
+                </div>
+                <div className="plantrip__info-query--queries">
+                  <Form>
+                    <FormGroup>
+                      <Label for="radius">
+                        Preferred proximity (radius): {poiQueries.radius / 1000}{" "}
+                        KM
+                      </Label>
+                      <Input
+                        type="range"
+                        value={poiQueries.radius}
+                        min={1000}
+                        max={50000}
+                        onChange={(e) => {
+                          updatePoiQueries((poiQueries) => ({
+                            ...poiQueries,
+                            radius: e.target.value,
+                          }));
+                        }}
+                        step={1000}
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label for="query">Search query: </Label>
+                      <Input
+                        id="query"
+                        value={poiQueries.query}
+                        onChange={(e) =>
+                          updatePoiQueries((poiQueries) => ({
+                            ...poiQueries,
+                            query: e.target.value,
+                          }))
+                        }
+                        maxLength={3}
+                        placeholder="Enter 3-letter search query"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <Label>Categories: </Label>
+                      {useMemo(
+                        () => (
+                          <DropdownTreeSelect
+                            data={poiFilterOptions}
+                            onChange={(_, selectedNodes) => {
+                              updatePoiQueries((poiQueries) => ({
+                                ...poiQueries,
+                                categories: selectedNodes
+                                  .map((node) => node.value)
+                                  .join(","),
+                              }));
+                            }}
+                            className="plantrip__info-query--dropdownTree"
+                            texts={{
+                              placeholder: "Choose your preferred categories",
+                              noMatches: "No matches!",
+                            }}
+                          />
+                        ),
+                        []
+                      )}
+                    </FormGroup>
+                  </Form>
+                </div>
+              </div>
+            </div>
           </TabPane>
         </TabContent>
       </div>

@@ -8,17 +8,20 @@ export const authSlice = createSlice({
     message: "",
     messageType: "",
     token: localStorage.getItem("token"),
+    loaded: false,
   },
   reducers: {
     setUser: (state, action) => {
       localStorage.setItem("token", action.payload.token);
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.loaded = true;
     },
     unsetUser: (state) => {
       localStorage.removeItem("token");
       state.user = null;
       state.token = null;
+      state.loaded = false;
     },
     setAuthMessage: (state, action) => {
       state.message = action.payload.message;
@@ -121,6 +124,7 @@ export const loginUser = ({ username, password }) => (dispatch) => {
 };
 
 export const selectUser = (state) => state.auth.user;
+export const selectUserLoadedState = (state) => state.auth.loaded;
 export const selectAuthMessage = (state) => ({
   message: state.auth.message,
   messageType: state.auth.messageType,

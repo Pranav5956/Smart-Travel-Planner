@@ -1,0 +1,103 @@
+.blogs {
+  padding-top: 5rem;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+.blog__display {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.blog__display-sidebar {
+  flex: 0.3;
+  margin: 1rem;
+  background: white;
+  border-radius: 20px;
+}
+
+.blog__display-main {
+  flex: 0.7;
+  margin: 1rem;
+  background: white;
+  border-radius: 20px;
+}
+
+.blog__display-grid {
+  margin: 2rem 1rem 1rem;
+  display: flex;
+  flex-direction: row;
+  height: 380px;
+}
+
+.blog__display-gridCell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog__display-gridCell h4 {
+  margin-left: 0.5rem;
+  text-align: center;
+}
+
+.blog__display-blogBig {
+  width: calc(100% - 1rem);
+  height: calc(100% - 1rem);
+  margin: 0.5rem;
+}
+
+.blog__display-gridCell--cell {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
+.blog__display-blogSmall {
+  width: calc(50% - 1rem);
+  height: calc(50% - 1rem);
+  margin: 0.5rem 0.5rem;
+  background: black;
+}
+
+.blog__display-others {
+  margin: 2rem 1rem 1rem;
+}
+
+.blog__display-others h4 {
+  margin: 0.5rem;
+  text-align: center;
+}
+
+.blog__display-others--grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 1rem;
+}
+
+.blog__display-blogSmaller {
+  width: 30%;
+  margin: 0.75rem;
+}
+
+.blog-box {
+  transition: transform 0.2s ease-in-out;
+}
+
+.blog-box img {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.blog-box:hover {
+  transform: scale(1.03);
+}

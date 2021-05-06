@@ -23,8 +23,30 @@ var userProfileSchema = new mongoose.Schema({
     },
     themes: { type: [Number], default: [0, 0, 0, 0, 0, 0] },
     accessibility: { type: [Number], default: [0, 0, 0, 0, 0, 0, 0, 0] },
-    facilityFilters: { type: [Number], default: [] },
-    themeFilters: { type: [Number], default: [] },
+    facilityFilters: { type: [String], default: [] },
+    themeFilters: { type: [String], default: [] },
+  },
+  POI: [
+    {
+      xid: String,
+      level: Number,
+      timestamp: Number,
+      categories: [String],
+    },
+  ],
+  blogs: [
+    {
+      blogId: { type: mongoose.Schema.Types.ObjectId, ref: "Blog" },
+      level: Number,
+      timestamp: Number,
+      evaluated: Boolean,
+    },
+  ],
+  POIcategories: [],
+  blogInterest: {
+    cost: Number,
+    duration: Number,
+    likes: Number,
   },
 });
 
