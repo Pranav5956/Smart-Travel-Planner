@@ -32,6 +32,45 @@ header {
   // color: $dark-primary-color;
 }
 
+.loading {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.loading svg {
+  width: 120px;
+  height: 120px;
+  fill: #007bff;
+}
+
+.loading span {
+  font-size: 2rem;
+}
+
+.loading span::after {
+  content: '';
+  animation: loading 1s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    content: '';
+  }
+  33% {
+    content: '.';
+  }
+  67% {
+    content: '..';
+  }
+  100% {
+    content: '...';
+  }
+}
+
 * {
   scrollbar-width: thin;
   scrollbar-color: #007bff;

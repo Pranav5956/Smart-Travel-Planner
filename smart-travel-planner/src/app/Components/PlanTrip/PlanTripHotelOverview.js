@@ -23,6 +23,7 @@ const PlanTripHotelOverview = ({
         <p className="hotel__overview-address">{address}</p>
         <div className="hotel__overview-attributes">
           <ReactStarRatingComponent
+            name={name + " rating"}
             editing={false}
             starCount={5}
             value={stars}
@@ -45,9 +46,6 @@ const PlanTripHotelOverview = ({
         <div className="hotel__overview-buttons">
           <Button color="primary" size="sm" onClick={onClickDetails}>
             View More
-          </Button>
-          <Button color="success" size="sm">
-            Add to Itinerary
           </Button>
         </div>
       </div>

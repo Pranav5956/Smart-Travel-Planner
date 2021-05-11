@@ -23,6 +23,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 import axios from "../axios";
+import { useSelector } from "react-redux";
+import { selectTheme } from "../redux/features/Theme";
 
 const routeLayerStyle = {
   id: "routeLayer",
@@ -63,6 +65,7 @@ const Map = ({
   updateSelectedStop,
   ...mapProps
 }) => {
+  const theme = useSelector(selectTheme);
   const [viewport, setViewport] = useState({
     latitude: (start.coordinates[1] + destination.coordinates[1]) / 2,
     longitude: (start.coordinates[0] + destination.coordinates[0]) / 2,
@@ -141,7 +144,9 @@ const Map = ({
       width: "100%",
       height: "100%",
       ref: mapRef,
-      mapStyle: "mapbox://styles/mapbox/dark-v10",
+      mapStyle: `mapbox://styles/mapbox/${
+        theme === "dark" ? "dark-v10" : "streets-v11"
+      }`,
       mapboxApiAccessToken: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
       onViewportChange: handleViewportChange,
       ...mapProps,

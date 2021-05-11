@@ -1,7 +1,5 @@
 import React, { useState, useRef, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setStart, setDestination } from "../../redux/features/Map";
 
 import MapGL from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
@@ -9,6 +7,7 @@ import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 import "./Home.css";
 import { Button } from "reactstrap";
+import { initializeItinerary } from "../../requests/itineraries.js";
 
 const Home = () => {
   const [start, updateStart] = useState({ name: "", coordinates: [] });
@@ -17,7 +16,6 @@ const Home = () => {
     coordinates: [],
   });
 
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const mapRef = useRef();
@@ -25,17 +23,17 @@ const Home = () => {
   const geocoderDestinationContainerRef = useRef();
 
   const onPlanTrip = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
 
       if (!start.coordinates.length || !destination.coordinates.length) return;
 
-      dispatch(setStart({ start }));
-      dispatch(setDestination({ destination }));
+      const response = await initializeItinerary([start, destination]);
+      const itineraryId = response.data.itinerary._id;
 
-      history.push("/plantrip", { from: "Home" });
+      history.push(`/plantrip/${itineraryId}`, { from: "Home" });
     },
-    [start, destination, dispatch, history]
+    [start, destination, history]
   );
 
   const onGeocoderStartClear = useCallback(

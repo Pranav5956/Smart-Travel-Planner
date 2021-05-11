@@ -77,6 +77,19 @@
   height: 100%;
   background: #ffffff;
   padding-top: 5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.plantrip__sidebar-items {
+  flex: 1;
+}
+
+.plantrip__sidebar-buttons {
+   display: flex;
+   flex-direction: column;
+   padding: 1rem;
+   gap: 0.5rem;
 }
 
 .plantrip__info-main {
@@ -646,4 +659,118 @@
 
 .plantrip__info-categoryBtns .btn {
   padding: 0.5rem 1.5rem;
+}
+
+.plantrip__info-autosave {
+  position: fixed;
+  bottom: 0.75rem;
+  right: 0;
+  z-index: 999;
+  margin: 2rem;
+  border-radius: 4px;
+}
+
+.plantrip__info-autosave .toast-header {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-size: 18px;
+  box-shadow: 0 5px 20px 5px rgba(0, 0, 0, 0.2);
+}
+
+.plantrip__info-autosave .toast-header .spinner-border {
+  width: 24px;
+  height: 24px;
+}
+
+.plantrip__info-autosaveStatus {
+  font-size: 24px;
+}
+
+.plantrip__itinerary {
+  max-height: 75vh;
+  overflow-y: auto;
+  padding: 1rem 0rem 2rem 5rem;
+}
+
+.plantrip__itinerary-stop {
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.plantrip__itinerary-stop--marker {
+  border-left: 3px dashed black;
+  position: absolute;
+  height: calc(100% - 2.5rem);
+  top: 2rem;
+  left: 0.9rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.plantrip__itineraryContent {
+  margin-left: 10vw;
+  width: 60vw;
+  max-height: 90vh;
+}
+
+.plantrip__itineraryModal {
+  border-radius: 25px;
+}
+
+.plantrip__itinerary-stop--place, .plantrip__itinerary-stop--hotel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background:rgba(230, 230, 230, 0.5);
+  width: fit-content;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  max-width: 90%;
+}
+
+.plantrip__itinerary-stop>h5 {
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+.plantrip__itinerary-stop h6 {
+  font-size: 1.3rem;
+}
+
+.plantrip__hotel-overview:hover, .plantrip__place-overview:hover {
+  transform: scale(1.03);
+}
+
+.plantrip__itinerary-thumbnail--cropper {
+  position: relative;
+  width: 140px;
+  min-width: 140px;
+  overflow: hidden;
+  border-radius: 50%;
+  height: 140px;
+}
+
+.plantrip__itinerary-thumbnail--cropper img {
+  margin: 0 auto;
+  display: inline;
+  height: 100%;
+  width: auto;
+}
+
+.plantrip__itinerary-address {
+  font-size: 0.9rem;
+}
+
+.plantrip__itinerary-hotelInfo {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.plantrip__itinerary-hotelInfo p{
+  font-weight: 500;
+  letter-spacing: 0.025rem;
 }

@@ -43,7 +43,10 @@ const NavBar = ({ theme }) => {
               <NavLink href="/home">Plan Trip</NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/home">View Blogs</NavLink>
+              <NavLink href="/blogs">Blogs</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/itineraries">Itineraries</NavLink>
             </NavItem>
           </Nav>
           <Nav className="ml-auto d-flex align-items-center" navbar>

@@ -65,5 +65,7 @@ export const getOverview = async (
       }
     }
   });
-  return POI["features"].filter((item) => item.properties.name != "");
+  return POI["features"]
+    .filter((item) => item.properties.name != "")
+    .map((item) => ({ ...item, city }));
 };

@@ -9,6 +9,7 @@ dotenv.config();
 import routeAPI from "./routes/api/route.js";
 import hotelAPI from "./routes/api/hotels.js";
 import placesAPI from "./routes/api/places.js";
+import itineraries from "./routes/api/itineraries.js";
 import auth from "./routes/users/auth.js";
 import blogs from "./routes/blogs/blog.js";
 import { checkForAuthentication } from "./routes/users/auth.middleware.js";
@@ -28,7 +29,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
   })
   .then(() => console.log(`Database connected`))
   .catch((err) => console.log(`Database connection error: ${err.message}`));
@@ -39,6 +40,7 @@ app.use(express.json());
 // Routes
 app.use("/users", auth);
 app.use("/blogs", checkForAuthentication, blogs);
+app.use("/itineraries", checkForAuthentication, itineraries);
 
 app.use("/api/route", checkForAuthentication, routeAPI);
 app.use("/api/hotels", checkForAuthentication, hotelAPI);

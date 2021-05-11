@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import {
   Button,
   Col,
@@ -16,8 +17,11 @@ import {
   NavItem,
   NavLink,
   Row,
+  Spinner,
   TabContent,
   TabPane,
+  Toast,
+  ToastHeader,
 } from "reactstrap";
 import moment from "moment";
 import Select from "react-select";
@@ -25,12 +29,20 @@ import Slider from "../Slider";
 import PlanTripHotelOverview from "./PlanTripHotelOverview";
 import PlanTripPlacesOverview from "./PlanTripPlacesOverview";
 import axios from "../../axios";
+import { FaCheck, FaInfoCircle, FaEdit } from "react-icons/fa";
 
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
 import DropdownTreeSelect from "react-dropdown-tree-select";
 import "react-dropdown-tree-select/dist/styles.css";
+
+import { Autosave } from "react-autosave";
+import {
+  updateItinerary,
+  updateItineraryWeights,
+} from "../../requests/itineraries";
+import { hotelDetail } from "../../data/QueryOptions";
 
 // import { overview } from "../../references/addHotels";
 
@@ -42,6 +54,7 @@ import {
   poiFilterOptions,
 } from "../../data/QueryOptions";
 import PlanTripHotelDetails from "./PlanTripHotelDetails";
+import PlanTripItineraryView from "./PlanTripItineraryView";
 
 const getFormattedDate = (translate = 0) => {
   return moment().add(translate, "days").format("YYYY-MM-DD");
@@ -72,21 +85,6 @@ const formatFilters = (filters) => {
   return formattedFilters;
 };
 
-// const getLeafNodes = (nodes) => {
-//   let leafNodes = [];
-
-//   while (nodes.length > 0) {
-//     if (nodes[0].hasOwnProperty("_children")) {
-//       nodes[0]._children.forEach((child) => nodes.push(child));
-//       nodes.shift();
-//     } else {
-//       leafNodes.push(nodes.shift());
-//     }
-//   }
-
-//   return leafNodes;
-// };
-
 const customSelectStyle = {
   multiValue: (provided, state) => ({
     ...provided,
@@ -104,7 +102,9 @@ const customSelectStyle = {
   }),
 };
 
-const PlanTripInformation = ({ stops }) => {
+const PlanTripInformation = ({ stops, itinerary, setItinerary }) => {
+  const params = useParams();
+  const history = useHistory();
   const [selectedStop, setSelectedStop] = useState(stops.length - 1);
   const [selectedHotel, setSelectedHotel] = useState({
     hotelId: null,
@@ -147,14 +147,66 @@ const PlanTripInformation = ({ stops }) => {
     categories: "",
     query: "",
   });
+  const [viewItinerary, setViewItinerary] = useState(false);
+
+  const itineraryNameRef = useRef(null);
+
+  const [autosave, setAutosave] = useState({
+    saving: false,
+    saved: false,
+    state: null,
+    message: "",
+  });
 
   useEffect(() => {
     setSelectedStop(stops.length - 1);
-  }, [stops, setSelectedStop]);
+  }, [stops.length, setSelectedStop]);
 
-  useEffect(() => {
-    formatFilters(filterQueries);
-  }, [filterQueries]);
+  const onSaveItinerary = async (itinerary) => {
+    setAutosave({
+      saving: true,
+      saved: false,
+      state: null,
+      message: "Auto-Saving",
+    });
+    return updateItinerary(params.itineraryId, itinerary);
+  };
+
+  const onSaveItinerarySuccess = () => {
+    setAutosave({
+      saving: false,
+      saved: true,
+      state: "success",
+      message: "Auto-Save Successful!",
+    });
+    setTimeout(
+      () =>
+        setAutosave((autosave) => ({
+          ...autosave,
+          saving: false,
+          saved: false,
+        })),
+      5000
+    );
+  };
+
+  const onSaveItineraryError = () => {
+    setAutosave({
+      saving: false,
+      saved: true,
+      state: "danger",
+      message: "Auto-Save Pending!",
+    });
+    setTimeout(
+      () =>
+        setAutosave((autosave) => ({
+          ...autosave,
+          saving: false,
+          saved: false,
+        })),
+      5000
+    );
+  };
 
   const setQuery = (query, value) => {
     updateFilterQueries({ ...filterQueries, [query]: value });
@@ -246,7 +298,7 @@ const PlanTripInformation = ({ stops }) => {
   useEffect(() => {
     getHotels();
     getPlaces();
-  }, [selectedStop]);
+  }, [stops[selectedStop].name]);
 
   const closeHotelModal = () =>
     setSelectedHotel((selectedHotel) => ({ ...selectedHotel, isOpen: false }));
@@ -256,17 +308,72 @@ const PlanTripInformation = ({ stops }) => {
       hotelId: false,
     }));
 
+  const onHardSaveItinerary = async () => {
+    await updateItinerary(params.itineraryId, itinerary);
+    const weights = {
+      added: {
+        hotels: itinerary.hotels,
+        POI: itinerary.POI,
+      },
+      removed: { hotels: [], POI: [] },
+      saveType: "hard",
+    };
+    await updateItineraryWeights(params.itineraryId, weights);
+  };
+
   return (
     <>
-      {selectedHotel.hotelId && (
-        <PlanTripHotelDetails
-          isOpen={selectedHotel.isOpen}
-          toggle={closeHotelModal}
-          hotelId={selectedHotel.hotelId}
-          filters={formatFilters(filterQueries)}
-          unsetHotelDetails={unsetHotelDetails}
+      <Autosave
+        data={itinerary}
+        onSave={onSaveItinerary}
+        onSuccess={onSaveItinerarySuccess}
+        onError={onSaveItineraryError}
+        interval={15000}
+      />
+      <Toast
+        isOpen={autosave.saving || autosave.saved}
+        // isOpen={true}
+        className="plantrip__info-autosave">
+        <ToastHeader
+          icon={
+            autosave.saving ? (
+              <Spinner color="primary" className="mr-2" />
+            ) : autosave.state === "success" ? (
+              <FaCheck
+                color="success"
+                className="plantrip__info-autosaveStatus text-success mr-2"
+              />
+            ) : (
+              <FaInfoCircle
+                color="danger"
+                className="plantrip__info-autosaveStatus text-danger mr-2"
+              />
+            )
+          }>
+          <p className={`text-${autosave.state || "secondary"} mb-0`}>
+            {autosave.message}
+          </p>
+        </ToastHeader>
+      </Toast>
+      {itinerary && (
+        <PlanTripItineraryView
+          isOpen={viewItinerary}
+          toggle={() => setViewItinerary((itinerary) => !itinerary)}
+          itinerary={itinerary}
+          setItinerary={setItinerary}
         />
       )}
+      <PlanTripHotelDetails
+        stopName={stops[selectedStop].name}
+        isOpen={selectedHotel.isOpen}
+        toggle={closeHotelModal}
+        hotelId={selectedHotel.hotelId}
+        filters={formatFilters(filterQueries)}
+        unsetHotelDetails={unsetHotelDetails}
+        setItinerary={setItinerary}
+        itinerary={itinerary}
+        thumbnail={selectedHotel.thumbnail}
+      />
       {placesCategories.categories.length > 0 && (
         <Modal
           className="plantrip__info-placesCategories"
@@ -286,9 +393,8 @@ const PlanTripInformation = ({ stops }) => {
                         ...placesCategories,
                         selectedCategories: {
                           ...placesCategories.selectedCategories,
-                          [category]: !placesCategories.selectedCategories[
-                            category
-                          ],
+                          [category]:
+                            !placesCategories.selectedCategories[category],
                         },
                       }));
                     }}
@@ -342,7 +448,40 @@ const PlanTripInformation = ({ stops }) => {
       )}
       <div className="plantrip__info-sidebar">
         <ListGroup className="plantrip__sidebar-items">
-          <h2 className="pb-3 pl-4">Waypoints</h2>
+          <FormGroup className="mr-3 ml-3 mb-3 d-flex">
+            <Input
+              innerRef={itineraryNameRef}
+              className="font-weight-bold form-control-lg"
+              value={itinerary.name}
+              placeholder="Untitled Itinerary"
+              onChange={(e) =>
+                setItinerary((itinerary) => ({
+                  ...itinerary,
+                  name: e.target.value,
+                }))
+              }
+              onBlur={(e) => {
+                if (e.target.value.length === 0) {
+                  setItinerary((itinerary) => ({
+                    ...itinerary,
+                    name: "Untitled Itinerary",
+                  }));
+                }
+              }}
+            />
+            <Button
+              className="ml-2 d-flex align-items-center justify-content-center"
+              color="primary"
+              onClick={() => {
+                itineraryNameRef.current.setSelectionRange(
+                  0,
+                  itineraryNameRef.current.value.length
+                );
+                itineraryNameRef.current.select();
+              }}>
+              <FaEdit size={20} className="ml-1" />
+            </Button>
+          </FormGroup>
           {stops.map((stop, index) => (
             <ListGroupItem
               key={index}
@@ -350,21 +489,39 @@ const PlanTripInformation = ({ stops }) => {
                 "plantrip__sidebar-item": true,
                 active: selectedStop === index,
               })}
-              onClick={() => setSelectedStop(index)}>
+              onClick={() => {
+                setSelectedStop(index);
+              }}>
               <ListGroupItemText>{stop.name}</ListGroupItemText>
             </ListGroupItem>
           ))}
         </ListGroup>
-        {/* <Button
-          color="primary"
-          onClick={() =>
-            setSelectedHotel((selectedHotel) => ({
-              hotelId: 1,
-              isOpen: true,
-            }))
-          }>
-          Open Modal
-        </Button> */}
+        <div className="plantrip__sidebar-buttons">
+          {/* <Button
+            onClick={() => {
+              setSelectedHotel({
+                hotelId: hotelDetail.hotelId,
+                thumbnail: hotelDetail.photos[0],
+                isOpen: true,
+              });
+            }}>
+            View Hotel
+          </Button> */}
+          <Button
+            color="primary"
+            size="lg"
+            onClick={() => setViewItinerary(true)}>
+            View Itinerary
+          </Button>
+          <Link
+            color="success"
+            className="btn btn-success btn-lg"
+            size="lg"
+            onClick={onHardSaveItinerary}
+            to={`../itineraries/${params.itineraryId}`}>
+            Save Itinerary
+          </Link>
+        </div>
       </div>
       <div className="plantrip__info-main">
         <Nav tabs>
@@ -392,7 +549,11 @@ const PlanTripInformation = ({ stops }) => {
                       <PlanTripHotelOverview
                         key={`overview-${index}`}
                         onClickDetails={() => {
-                          setSelectedHotel({ hotelId: item.id, isOpen: true });
+                          setSelectedHotel({
+                            hotelId: item.id,
+                            thumbnail: item.thumbnail,
+                            isOpen: true,
+                          });
                         }}
                         {...item}
                       />
@@ -561,11 +722,15 @@ const PlanTripInformation = ({ stops }) => {
                       // />
                       <PlanTripPlacesOverview
                         key={item.id}
+                        id={item.id}
+                        stopName={stops[selectedStop].name}
                         name={item.properties.name}
                         rating={item.properties.rate}
                         thumbnail={item.thumbnail}
                         distance={item.properties.dist}
                         tags={item.properties.kinds}
+                        setItinerary={setItinerary}
+                        itinerary={itinerary}
                       />
                     ))
                   : placesInfo.queried && (

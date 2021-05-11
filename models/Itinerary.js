@@ -1,25 +1,40 @@
-import { mongoose } from "mongoose";
+import mongoose from "mongoose";
 
-var itinerarySchema = new mongoose.Schema({
-  name: String,
-  author: { type: Schema.Types.ObjectId, ref: "User" },
-  route: [String],
-  hotels: [
-    {
-      name: String,
-      hotelId: String,
-      address: String,
-      arrivingLeaving: [String],
-      atCheckIn: [String],
-    },
-  ],
-  POI: [
-    {
-      name: String,
-      xid: String,
-      kinds: String,
-    },
-  ],
-});
+var itinerarySchema = new mongoose.Schema(
+  {
+    name: String,
+    author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    route: [
+      {
+        name: String,
+        coordinates: [Number, Number],
+      },
+    ],
+    hotels: [
+      {
+        name: String,
+        thumbnail: String,
+        hotelId: String,
+        cityId: String,
+        filters: {},
+        address: String,
+        checkin_date: String,
+        checkout_date: String,
+        adults_number: Number,
+        stopName: String,
+      },
+    ],
+    POI: [
+      {
+        name: String,
+        thumbnail: String,
+        xid: String,
+        kinds: String,
+        stopName: String,
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model("Itinerary", itinerarySchema);
+export default mongoose.model("itineraries", itinerarySchema);

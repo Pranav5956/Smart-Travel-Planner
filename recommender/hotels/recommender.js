@@ -11,7 +11,13 @@ import scaler from "minmaxscaler";
 import cosine_similarity from "compute-cosine-similarity";
 import { getHotels, getCityInfo } from "../../api/hotels.js";
 
-export const updateWeight = async (hotelId, cityId, userId, level, filters) => {
+export const updateHotelWeight = async (
+  hotelId,
+  cityId,
+  userId,
+  level,
+  filters
+) => {
   try {
     // check if hotel exists in DB, else add
     Hotel.find({ hotelId }, function (err, doc) {
@@ -24,7 +30,6 @@ export const updateWeight = async (hotelId, cityId, userId, level, filters) => {
     if (!profile) return;
 
     var flag = 0;
-    console.log(filters);
     const amenity_ids = filters["amenity_ids"]?.split(",") || [];
     const theme_ids = filters["theme_ids"]?.split(",") || [];
 

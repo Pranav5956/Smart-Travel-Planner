@@ -17,6 +17,7 @@ import { loadUserOnStart } from "./redux/features/Auth";
 
 import "./App.scss";
 import Blogs from "./pages/Blogs/Blogs";
+import Itineraries from "./pages/Itineraries/Itineraries";
 
 function App() {
   const theme = useSelector(selectTheme);
@@ -24,15 +25,16 @@ function App() {
 
   useEffect(() => {
     dispatch(loadUserOnStart());
-  }, [dispatch]);
+  }, [dispatch, localStorage.getItem("token")]);
 
   return (
     <div className={clsx({ app: true, "dark-theme": theme === "dark" })}>
       <NavBar theme={theme} />
       <Router>
         <Switch>
-          <ProtectedRoute path="/plantrip" component={PlanTrip} />
+          <ProtectedRoute path="/plantrip/:itineraryId" component={PlanTrip} />
           <ProtectedRoute path="/blogs" component={Blogs} />
+          <ProtectedRoute path="/itineraries" component={Itineraries} />
           <Route path="/register" component={Register} />
           <Route path="/login" component={Login} />
           <Route path={["/", "/home"]} component={Home} />

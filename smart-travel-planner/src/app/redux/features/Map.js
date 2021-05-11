@@ -22,11 +22,14 @@ export const mapSlice = createSlice({
 
     addStop: (state, action) => {
       if (action.payload.stop in state.stops) return;
-      state.stops.push(action.payload.stop);
+      state.stops = [...state.stops, action.payload.stop];
     },
 
     removeStop: (state, action) => {
-      state.stops.filter((stop) => stop !== action.payload.stop);
+      state.stops = [
+        ...state.stops.slice(0, action.payload.index),
+        ...state.stops.slice(action.payload.index + 1),
+      ];
     },
   },
 });

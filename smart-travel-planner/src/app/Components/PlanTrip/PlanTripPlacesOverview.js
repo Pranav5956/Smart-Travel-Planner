@@ -1,16 +1,65 @@
 import React from "react";
 import ReactStarRatingComponent from "react-star-rating-component";
 import { Badge, Button } from "reactstrap";
+import { updateItineraryWeights } from "../../requests/itineraries";
+import { useParams } from "react-router";
 
-const PlanTripHotelOverview = ({
+const PlanTripPLacesOverview = ({
+  id,
+  stopName,
   name,
   rating,
   thumbnail,
   distance,
   tags,
   onClickDetails,
+  setItinerary,
+  itinerary,
   ...props
 }) => {
+  const params = useParams();
+
+  const addToItinerary = async () => {
+    setItinerary((itinerary) => ({
+      ...itinerary,
+      POI: [
+        ...itinerary.POI,
+        {
+          name: name,
+          xid: id,
+          kinds: tags,
+          thumbnail,
+          stopName,
+        },
+      ],
+    }));
+    const weights = {
+      added: {
+        POI: [{ xid: id }],
+        hotels: [],
+      },
+      removed: { hotels: [], POI: [] },
+      saveType: "soft",
+    };
+    await updateItineraryWeights(params.itineraryId, weights);
+  };
+
+  const removeFromItinerary = async () => {
+    setItinerary((itinerary) => ({
+      ...itinerary,
+      POI: itinerary.POI.filter((place) => place.xid !== id),
+    }));
+    const weights = {
+      removed: {
+        POI: [{ xid: id }],
+        hotels: [],
+      },
+      added: { hotels: [], POI: [] },
+      saveType: "soft",
+    };
+    await updateItineraryWeights(params.itineraryId, weights);
+  };
+
   return (
     <div className="plantrip__place-overview" {...props}>
       <div className="place__overview-thumbnail--cropper">
@@ -50,13 +99,19 @@ const PlanTripHotelOverview = ({
           </p>
         </div>
         <div className="place__overview-buttons">
-          <Button color="success" size="sm">
-            Add to Itinerary
-          </Button>
+          {itinerary.POI.filter((place) => place.xid === id).length > 0 ? (
+            <Button color="danger" size="sm" onClick={removeFromItinerary}>
+              Remove from Itinerary
+            </Button>
+          ) : (
+            <Button color="success" size="sm" onClick={addToItinerary}>
+              Add to Itinerary
+            </Button>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default PlanTripHotelOverview;
+export default PlanTripPLacesOverview;

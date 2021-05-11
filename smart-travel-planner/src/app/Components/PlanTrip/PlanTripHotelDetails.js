@@ -4,9 +4,7 @@ import {
   Button,
   Card,
   CardBody,
-  CardGroup,
   CardHeader,
-  CardImg,
   Collapse,
   Modal,
   ModalBody,
@@ -15,29 +13,36 @@ import {
 } from "reactstrap";
 import moment from "moment";
 import axios from "../../axios";
+import { updateItineraryWeights } from "../../requests/itineraries";
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-// import { hotelDetail } from "../../data/QueryOptions";
+import { hotelDetail } from "../../data/QueryOptions";
 import ReactStarRatingComponent from "react-star-rating-component";
 
 import SwiperCore, { EffectCoverflow } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.scss";
 import "swiper/components/effect-coverflow/effect-coverflow.scss";
+import { useParams } from "react-router";
 SwiperCore.use([EffectCoverflow]);
 
 const PlanTripHotelDetails = ({
+  stopName,
   isOpen,
   toggle,
   hotelId,
   filters,
   unsetHotelDetails,
+  setItinerary,
+  itinerary,
+  thumbnail,
 }) => {
   const [details, setDetails] = useState(null);
   const [activeAccordianTab, setActiveAccordianTab] = useState({
     amenityIndex: 0,
     subIndex: 0,
   });
+  const params = useParams();
 
   const getHotelDetails = async () => {
     setDetails(null);
@@ -50,6 +55,52 @@ const PlanTripHotelDetails = ({
     if (details.message) return setDetails(null);
     setDetails(details);
     // setDetails(hotelDetail);
+  };
+
+  const addToItinerary = async () => {
+    setItinerary((itinerary) => ({
+      ...itinerary,
+      hotels: [
+        ...itinerary.hotels,
+        {
+          name: details.name,
+          thumbnail,
+          hotelId,
+          cityId: details.cityId,
+          address: details.address,
+          filters,
+          checkin_date: moment(filters.checkin_date).unix(),
+          checkout_date: moment(filters.checkout_date).unix(),
+          adults_number: filters.adults_number,
+          stopName,
+        },
+      ],
+    }));
+    const weights = {
+      added: {
+        hotels: [{ hotelId: details.hotelId, cityId: details.cityId, filters }],
+        POI: [],
+      },
+      removed: { hotels: [], POI: [] },
+      saveType: "soft",
+    };
+    await updateItineraryWeights(params.itineraryId, weights);
+  };
+
+  const removeFromItinerary = async () => {
+    setItinerary((itinerary) => ({
+      ...itinerary,
+      hotels: itinerary.hotels.filter((hotel) => hotel.hotelId !== hotelId),
+    }));
+    const weights = {
+      removed: {
+        hotels: [{ hotelId: details.hotelId, cityId: details.cityId, filters }],
+        POI: [],
+      },
+      added: { hotels: [], POI: [] },
+      saveType: "soft",
+    };
+    await updateItineraryWeights(params.itineraryId, weights);
   };
 
   return (
@@ -86,11 +137,25 @@ const PlanTripHotelDetails = ({
                     {details.address}
                   </p>
                   <div className="plantrip__details-iterinary mt-1">
-                    <Button color="success" size="sm">
-                      Add to Iterinary
-                    </Button>
+                    {itinerary.hotels.filter(
+                      (hotel) => hotel.hotelId === hotelId
+                    ).length > 0 ? (
+                      <Button
+                        color="danger"
+                        size="sm"
+                        onClick={removeFromItinerary}>
+                        Remove from Iterinary
+                      </Button>
+                    ) : (
+                      <Button
+                        color="success"
+                        size="sm"
+                        onClick={addToItinerary}>
+                        Add to Iterinary
+                      </Button>
+                    )}
                     <Button
-                      color="danger"
+                      color="secondary"
                       size="sm"
                       className="ml-3"
                       onClick={toggle}>

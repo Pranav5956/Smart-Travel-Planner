@@ -14,6 +14,6 @@ export const checkForAuthentication = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (e) {
-    res.status(400).json({ msg: "Token is not valid." });
+    res.status(403).json({ msg: "Token is not valid." });
   }
 };

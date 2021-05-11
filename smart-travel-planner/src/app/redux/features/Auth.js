@@ -21,7 +21,7 @@ export const authSlice = createSlice({
       localStorage.removeItem("token");
       state.user = null;
       state.token = null;
-      state.loaded = false;
+      state.loaded = true;
     },
     setAuthMessage: (state, action) => {
       state.message = action.payload.message;
