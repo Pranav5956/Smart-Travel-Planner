@@ -19,7 +19,7 @@ const otmAPI = async (method, query) => {
 
     return data;
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err.response.data, "places");
   }
 };
 

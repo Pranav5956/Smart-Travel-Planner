@@ -6,12 +6,13 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const { city, radius, categories, query } = req.body;
+  console.log(query);
 
   const data = await getOverview(
     city,
     radius,
     categories,
-    query.length > 0 ? "1" : "0",
+    query.length > 0 ? 1 : 0,
     query
   );
   res.json(data);

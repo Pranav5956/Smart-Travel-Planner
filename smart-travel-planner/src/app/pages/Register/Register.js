@@ -21,6 +21,7 @@ import "./Register.css";
 import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const RegisterSchema = Yup.object().shape({
   username: Yup.string()
@@ -87,105 +88,130 @@ const Register = () => {
 
   return (
     <div className="register">
-      <Card className="register__card">
-        <CardTitle tag="h2" className="text-center">
-          REGISTER
-        </CardTitle>
+      <div className="register__card-container">
+        <Card className="register__card">
+          <CardTitle
+            tag="h2"
+            className="text-center"
+            style={{
+              fontSize: "2.3rem",
+              fontWeight: 700,
+              letterSpacing: "0.1ch",
+            }}>
+            REGISTER
+          </CardTitle>
 
-        <Formik
-          initialValues={{
-            username: "",
-            password: "",
-            confirmPassword: "",
-            email: "",
-          }}
-          validationSchema={RegisterSchema}
-          onSubmit={onSubmit}>
-          <Form className="register__form">
-            <FormGroup>
-              <Field
-                placeholder="Enter username"
-                id="username"
-                name="username"
-                component={CustomInput}
-              />
-            </FormGroup>
-            <FormGroup>
-              <InputGroup>
+          <Formik
+            initialValues={{
+              username: "",
+              password: "",
+              confirmPassword: "",
+              email: "",
+            }}
+            validationSchema={RegisterSchema}
+            onSubmit={onSubmit}>
+            <Form className="register__form">
+              <FormGroup>
                 <Field
-                  placeholder="Enter password"
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  component={CustomInput}
-                  appendFieldIcon={
-                    showPassword ? (
-                      <BsEyeFill onClick={toggleShowPassword} color="blue" />
-                    ) : (
-                      <BsEyeSlashFill onClick={toggleShowPassword} />
-                    )
-                  }
-                />
-              </InputGroup>
-            </FormGroup>
-            <FormGroup>
-              <InputGroup>
-                <Field
-                  placeholder="Confirm password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  appendFieldIcon={
-                    showConfirmPassword ? (
-                      <BsEyeFill
-                        onClick={toggleShowConfirmPassword}
-                        color="blue"
-                      />
-                    ) : (
-                      <BsEyeSlashFill onClick={toggleShowConfirmPassword} />
-                    )
-                  }
+                  placeholder="Enter username"
+                  id="username"
+                  name="username"
                   component={CustomInput}
                 />
-              </InputGroup>
-            </FormGroup>
-            <FormGroup>
-              <Field
-                placeholder="Enter email address"
-                id="email"
-                name="email"
-                type="email"
-                component={CustomInput}
-              />
-            </FormGroup>
-            {registerStatus.loading && (
-              <div className="w-100 d-flex align-items-center justify-content-center mt-2">
-                <Spinner color="primary" size="sm" className="mr-2" />
-                Loggin in user ...
-              </div>
-            )}
-            {registerStatus && (
-              <Alert
-                color={registerStatus.type}
-                isOpen={registerStatus.isOpen}
-                toggle={() =>
-                  setRegisterStatus((registerStatus) => ({
-                    ...registerStatus,
-                    isOpen: false,
-                  }))
-                }>
-                {registerStatus.message}
-              </Alert>
-            )}
-            <FormGroup className="d-flex align-items-center justify-content-center mt-4">
-              <Button color="primary" className="px-5 py-2" type="submit">
-                Register
-              </Button>
-            </FormGroup>
-          </Form>
-        </Formik>
-        <p className="text-muted text-center mt-2">©Copyright WhatsappBleh</p>
-      </Card>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup>
+                  <Field
+                    placeholder="Enter password"
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    component={CustomInput}
+                    appendFieldIcon={
+                      showPassword ? (
+                        <BsEyeFill onClick={toggleShowPassword} color="blue" />
+                      ) : (
+                        <BsEyeSlashFill onClick={toggleShowPassword} />
+                      )
+                    }
+                  />
+                </InputGroup>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup>
+                  <Field
+                    placeholder="Confirm password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    appendFieldIcon={
+                      showConfirmPassword ? (
+                        <BsEyeFill
+                          onClick={toggleShowConfirmPassword}
+                          color="blue"
+                        />
+                      ) : (
+                        <BsEyeSlashFill onClick={toggleShowConfirmPassword} />
+                      )
+                    }
+                    component={CustomInput}
+                  />
+                </InputGroup>
+              </FormGroup>
+              <FormGroup>
+                <Field
+                  placeholder="Enter email address"
+                  id="email"
+                  name="email"
+                  type="email"
+                  component={CustomInput}
+                />
+              </FormGroup>
+              {registerStatus.loading && (
+                <div className="w-100 d-flex align-items-center justify-content-center mt-2">
+                  <Spinner color="primary" size="sm" className="mr-2" />
+                  Loggin in user ...
+                </div>
+              )}
+              {registerStatus && (
+                <Alert
+                  color={registerStatus.type}
+                  isOpen={registerStatus.isOpen}
+                  toggle={() =>
+                    setRegisterStatus((registerStatus) => ({
+                      ...registerStatus,
+                      isOpen: false,
+                    }))
+                  }>
+                  {registerStatus.message}
+                </Alert>
+              )}
+              <FormGroup className="d-flex align-items-center justify-content-center mt-4">
+                <Button color="primary" className="px-5 py-2" type="submit">
+                  Register
+                </Button>
+              </FormGroup>
+            </Form>
+          </Formik>
+          <p className="text-center mt-2">©copyright Travel Planner, 2021</p>
+        </Card>
+      </div>
+      <div className="register__icons p-3">
+        <a href="" aria-hidden="true">
+          <FaInstagram />
+        </a>
+        <a
+          href="https://github.com/Pranav5956/Smart-Travel-Planner"
+          aria-hidden="true">
+          <FaGithub />
+        </a>
+        <a href="" aria-hidden="true">
+          <FaFacebook />
+        </a>
+        <a href="" aria-hidden="true">
+          <FaLinkedin />
+        </a>
+      </div>
     </div>
   );
 };

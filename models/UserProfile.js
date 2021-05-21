@@ -42,12 +42,13 @@ var userProfileSchema = new mongoose.Schema({
       evaluated: Boolean,
     },
   ],
-  POIcategories: [],
+  POIcategories: { type: [Number], default: [0, 0, 0] },
   blogInterest: {
-    cost: Number,
-    duration: Number,
-    likes: Number,
+    cost: 0,
+    duration: 0,
+    likes: 0,
   },
+  blogsPosted: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog" }],
 });
 
 export default mongoose.model("user-profiles", userProfileSchema);

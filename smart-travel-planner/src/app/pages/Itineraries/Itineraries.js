@@ -59,25 +59,29 @@ const Itineraries = () => {
           }))}
           renderResults={(results) => (
             <ListGroup className="itinerary__sidebar-itineraries">
-              {results.length > 0
-                ? results.map((itinerary) => (
-                    <Link
-                      to={`/itineraries/${itinerary._id}`}
-                      key={itinerary._id}
-                      style={{ textDecoration: "none" }}>
-                      <ListGroupItem
-                        className="itinerary__sidebar-itinerary"
-                        active={activeItinerary === itinerary._id}>
-                        <ListGroupItemHeading className="itinerary__sidebar-itineraryName">
-                          {itinerary.name}
-                        </ListGroupItemHeading>
-                        <ListGroupItemText className="itinerary__sidebar-itineraryCreatedAt mb-1">
-                          Created {getTimeText(itinerary.createdAt)}
-                        </ListGroupItemText>
-                      </ListGroupItem>
-                    </Link>
-                  ))
-                : "No matching itineraries found!"}
+              {results.length > 0 ? (
+                results.map((itinerary) => (
+                  <Link
+                    to={`/itineraries/${itinerary._id}`}
+                    key={itinerary._id}
+                    style={{ textDecoration: "none" }}>
+                    <ListGroupItem
+                      className="itinerary__sidebar-itinerary"
+                      active={activeItinerary === itinerary._id}>
+                      <ListGroupItemHeading className="itinerary__sidebar-itineraryName">
+                        {itinerary.name}
+                      </ListGroupItemHeading>
+                      <ListGroupItemText className="itinerary__sidebar-itineraryCreatedAt mb-1">
+                        Created {getTimeText(itinerary.createdAt)}
+                      </ListGroupItemText>
+                    </ListGroupItem>
+                  </Link>
+                ))
+              ) : (
+                <div className="itinerary__sidebar-noResults">
+                  No matching itineraries found!
+                </div>
+              )}
             </ListGroup>
           )}
         />

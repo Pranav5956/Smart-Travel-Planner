@@ -34,12 +34,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const {
-  setUser,
-  unsetUser,
-  setAuthMessage,
-  clearAuthMessage,
-} = authSlice.actions;
+export const { setUser, unsetUser, setAuthMessage, clearAuthMessage } =
+  authSlice.actions;
 
 export const tokenHeaderConfig = (getState) => {
   const token = getState().auth.token;
@@ -71,57 +67,61 @@ export const loadUserOnStart = () => (dispatch, getState) => {
     });
 };
 
-export const registerUser = ({ username, email, password }) => (dispatch) => {
-  const config = { headers: { "Content-Type": "Application/json" } };
-  const body = { username, email, password };
+export const registerUser =
+  ({ username, email, password }) =>
+  (dispatch) => {
+    const config = { headers: { "Content-Type": "Application/json" } };
+    const body = { username, email, password };
 
-  axios
-    .post("/users/register", body, config)
-    .then((res) => {
-      dispatch(setUser(res.data));
-      dispatch(
-        setAuthMessage({
-          message: "Registration successful!",
-          messageType: "success",
-        })
-      );
-    })
-    .catch((err) => {
-      dispatch(unsetUser());
-      dispatch(
-        setAuthMessage({
-          message: err.response.data.msg,
-          messageType: "danger",
-        })
-      );
-    });
-};
+    axios
+      .post("/users/register", body, config)
+      .then((res) => {
+        dispatch(setUser(res.data));
+        dispatch(
+          setAuthMessage({
+            message: "Registration successful!",
+            messageType: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(unsetUser());
+        dispatch(
+          setAuthMessage({
+            message: err.response.data.msg,
+            messageType: "danger",
+          })
+        );
+      });
+  };
 
-export const loginUser = ({ username, password }) => (dispatch) => {
-  const config = { headers: { "Content-Type": "Application/json" } };
-  const body = { username, password };
+export const loginUser =
+  ({ username, password }) =>
+  (dispatch) => {
+    const config = { headers: { "Content-Type": "Application/json" } };
+    const body = { username, password };
 
-  axios
-    .post("/users/login", body, config)
-    .then((res) => {
-      dispatch(setUser(res.data));
-      dispatch(
-        setAuthMessage({
-          message: "Login successful!",
-          messageType: "success",
-        })
-      );
-    })
-    .catch((err) => {
-      dispatch(unsetUser());
-      dispatch(
-        setAuthMessage({
-          message: err.response.data.msg,
-          messageType: "danger",
-        })
-      );
-    });
-};
+    axios
+      .post("/users/login", body, config)
+      .then((res) => {
+        dispatch(setUser(res.data));
+        dispatch(
+          setAuthMessage({
+            message: "Login successful!",
+            messageType: "success",
+          })
+        );
+      })
+      .catch((err) => {
+        dispatch(unsetUser());
+        dispatch(
+          setAuthMessage({
+            message: err.response.data.msg,
+            messageType: "danger",
+          })
+        );
+      });
+  };
 
 export const selectUser = (state) => state.auth.user;
 export const selectUserLoadedState = (state) => state.auth.loaded;

@@ -389,6 +389,20 @@
   border-radius: 1em;
 }
 
+.plantrip__info-hotels--loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.plantrip__details-modal .modal-body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .modal-dialog {
   max-width: 0;
   min-width: 80vw;

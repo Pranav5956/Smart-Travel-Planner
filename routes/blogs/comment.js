@@ -1,23 +1,33 @@
 import express from "express";
 import Comment from "../../models/Comment.js";
 import User from "../../models/User.js";
+import {
+  getSentiment,
+  updateWeight,
+} from "../../recommender/blogs/utilities.js";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
   try {
-    const comments = await Comment.find({ _id: { $in: req.blog.comments } });
+    const comments = await Comment.find({
+      _id: { $in: req.blog.comments },
+    }).sort({
+      createdAt: -1,
+    });
     const commentsUsername = await User.find(
       {
         _id: { $in: comments.map((comment) => comment.author) },
       },
-      { username: 1, _id: 0 }
+      { username: 1, _id: 1 }
     );
 
     res.json(
-      comments.map((comment, index) => ({
+      comments.map((comment) => ({
         ...comment._doc,
-        author: commentsUsername[index].username,
+        author: commentsUsername.find(
+          (user) => String(user._id) === String(comment.author)
+        ),
       }))
     );
   } catch (err) {
@@ -31,7 +41,10 @@ router.post("/", async (req, res) => {
     const { text } = req.body;
     const comment = await Comment.create({ text, author: req.user.id });
 
-    req.blog.comments.push(comment.id);
+    const commentSentimentScore = await getSentiment(text);
+    await updateWeight(req.blog._id, req.user.id, commentSentimentScore.weight);
+
+    req.blog.comments = [comment.id, ...req.blog.comments];
     await req.blog.save();
     res.send();
   } catch (err) {
@@ -55,7 +68,7 @@ router.put("/:commentId", async (req, res) => {
 router.delete("/:commentId", async (req, res) => {
   try {
     const comment = await Comment.findByIdAndRemove(req.params.commentId);
-    req.blog.comments.pull(comment.id);
+    req.blog.comments.pull(comment._id);
     await req.blog.save();
     res.send();
   } catch (err) {

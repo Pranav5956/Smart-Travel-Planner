@@ -6,8 +6,16 @@ import Geocoder from "react-map-gl-geocoder";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 import "./Home.css";
-import { Button } from "reactstrap";
+import { Button, Jumbotron } from "reactstrap";
 import { initializeItinerary } from "../../requests/itineraries.js";
+import {
+  FaFacebook,
+  FaGithub,
+  FaGithubAlt,
+  FaInstagram,
+  FaInstagramSquare,
+  FaLinkedin,
+} from "react-icons/fa";
 
 const Home = () => {
   const [start, updateStart] = useState({ name: "", coordinates: [] });
@@ -63,20 +71,29 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="home__trip-plannerContainer">
+      <Jumbotron className="home__trip-plannerContainer">
         <div className="home__trip-planner">
-          <div
-            className="geocoderContainer"
-            ref={geocoderStartContainerRef}></div>
-          <div
-            className="geocoderContainer"
-            ref={geocoderDestinationContainerRef}></div>
-          <Button
-            color="primary"
-            onClick={onPlanTrip}
-            className="rounded-pill px-4 mx-3">
-            Plan Trip
-          </Button>
+          <h1 className="display-3 pl-5">Trip Planner</h1>
+          <p className="lead px-5">
+            Welcome to our Smart Trip Planner. Explore interesting places, book
+            hotels and plan trips with ease!
+          </p>
+
+          <p className="lead mb-0 mt-3 pl-5">Plan your next trip</p>
+          <div className="home__trip-planner--form ml-5">
+            <div
+              className="geocoderContainer"
+              ref={geocoderStartContainerRef}></div>
+            <div
+              className="geocoderContainer"
+              ref={geocoderDestinationContainerRef}></div>
+            <Button
+              color="primary"
+              onClick={onPlanTrip}
+              className="rounded-pill px-4 mx-3">
+              Plan Trip
+            </Button>
+          </div>
 
           <MapGL
             ref={mapRef}
@@ -104,6 +121,22 @@ const Home = () => {
             />
           </MapGL>
         </div>
+      </Jumbotron>
+      <div className="home__icons mt-auto p-3 ml-auto">
+        <a href="" aria-hidden="true">
+          <FaInstagram />
+        </a>
+        <a
+          href="https://github.com/Pranav5956/Smart-Travel-Planner"
+          aria-hidden="true">
+          <FaGithub />
+        </a>
+        <a href="" aria-hidden="true">
+          <FaFacebook />
+        </a>
+        <a href="" aria-hidden="true">
+          <FaLinkedin />
+        </a>
       </div>
     </div>
   );

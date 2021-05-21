@@ -21,6 +21,7 @@ import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import CustomInput from "../../components/CustomInput";
 
 import "./Login.css";
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string()
@@ -73,77 +74,102 @@ const Login = () => {
 
   return (
     <div className="login">
-      <Card className="login__card">
-        <CardTitle tag="h2" className="text-center">
-          LOGIN
-        </CardTitle>
+      <div className="login__card-container">
+        <Card className="login__card">
+          <CardTitle
+            tag="h2"
+            className="text-center"
+            style={{
+              fontSize: "2.3rem",
+              fontWeight: 700,
+              letterSpacing: "0.1ch",
+            }}>
+            LOGIN
+          </CardTitle>
 
-        <Formik
-          initialValues={{
-            username: "",
-            password: "",
-          }}
-          validationSchema={LoginSchema}
-          onSubmit={onSubmit}>
-          <Form className="login__form">
-            <FormGroup>
-              <Field
-                placeholder="Enter username"
-                id="username"
-                name="username"
-                component={CustomInput}
-              />
-            </FormGroup>
-            <FormGroup>
-              <InputGroup>
+          <Formik
+            initialValues={{
+              username: "",
+              password: "",
+            }}
+            validationSchema={LoginSchema}
+            onSubmit={onSubmit}>
+            <Form className="login__form">
+              <FormGroup>
                 <Field
-                  placeholder="Enter password"
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter username"
+                  id="username"
+                  name="username"
                   component={CustomInput}
-                  appendFieldIcon={
-                    showPassword ? (
-                      <BsEyeFill onClick={toggleShowPassword} color="blue" />
-                    ) : (
-                      <BsEyeSlashFill onClick={toggleShowPassword} />
-                    )
-                  }
                 />
-              </InputGroup>
-            </FormGroup>
-            {loginStatus.loading && (
-              <div className="w-100 d-flex align-items-center justify-content-center mt-2">
-                <Spinner color="primary" size="sm" className="mr-2" />
-                Loggin in user ...
-              </div>
-            )}
-            {loginStatus && (
-              <Alert
-                color={loginStatus.type}
-                isOpen={loginStatus.isOpen}
-                toggle={() =>
-                  setLoginStatus((loginStatus) => ({
-                    ...loginStatus,
-                    isOpen: false,
-                  }))
-                }>
-                {loginStatus.message}
-              </Alert>
-            )}
-            <FormGroup className="d-flex align-items-center justify-content-center mt-4">
-              <Button
-                color="primary"
-                className="px-4 py-2"
-                type="submit"
-                disabled={loginStatus.loading}>
-                Login
-              </Button>
-            </FormGroup>
-          </Form>
-        </Formik>
-        <p className="text-muted text-center mt-2">©Copyright WhatsappBleh</p>
-      </Card>
+              </FormGroup>
+              <FormGroup>
+                <InputGroup>
+                  <Field
+                    placeholder="Enter password"
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    component={CustomInput}
+                    appendFieldIcon={
+                      showPassword ? (
+                        <BsEyeFill onClick={toggleShowPassword} color="blue" />
+                      ) : (
+                        <BsEyeSlashFill onClick={toggleShowPassword} />
+                      )
+                    }
+                  />
+                </InputGroup>
+              </FormGroup>
+              {loginStatus.loading && (
+                <div className="w-100 d-flex align-items-center justify-content-center mt-2">
+                  <Spinner color="primary" size="sm" className="mr-2" />
+                  Loggin in user ...
+                </div>
+              )}
+              {loginStatus && (
+                <Alert
+                  color={loginStatus.type}
+                  isOpen={loginStatus.isOpen}
+                  toggle={() =>
+                    setLoginStatus((loginStatus) => ({
+                      ...loginStatus,
+                      isOpen: false,
+                    }))
+                  }>
+                  {loginStatus.message}
+                </Alert>
+              )}
+              <FormGroup className="d-flex align-items-center justify-content-center mt-4">
+                <Button
+                  color="primary"
+                  className="px-4 py-2"
+                  type="submit"
+                  disabled={loginStatus.loading}>
+                  Login
+                </Button>
+              </FormGroup>
+            </Form>
+          </Formik>
+          <p className="text-center mt-2">©copyright Travel Planner, 2021</p>
+        </Card>
+      </div>
+      <div className="login__icons p-3">
+        <a href="" aria-hidden="true">
+          <FaInstagram />
+        </a>
+        <a
+          href="https://github.com/Pranav5956/Smart-Travel-Planner"
+          aria-hidden="true">
+          <FaGithub />
+        </a>
+        <a href="" aria-hidden="true">
+          <FaFacebook />
+        </a>
+        <a href="" aria-hidden="true">
+          <FaLinkedin />
+        </a>
+      </div>
     </div>
   );
 };

@@ -39,9 +39,12 @@
     "jsonwebtoken": "^8.5.1",
     "minmaxscaler": "^1.0.1",
     "mongoose": "^5.12.3",
+    "monkeylearn": "^3.4.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^6.1.0"
+    "passport-local-mongoose": "^6.1.0",
+    "pusher": "^5.0.0",
+    "react-transition-group": "^4.4.1"
   },
   "devDependencies": {
     "concurrently": "^6.0.0",

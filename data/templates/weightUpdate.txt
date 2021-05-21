@@ -1,0 +1,26 @@
+Capture every user interaction by running updateWeight() with
+the following weights,
+
+Hotels
+0.1 - user opens to view more details
+0.36 - hotel removed from itinerary
+0.63 - hotel added to itinerary
+0.9 - itinerary saved
+
+POI
+0.1 - POI removed from itinerary
+0.5 - POI added to itinerary
+0.9 - itinerary saved
+
+Blogs
+0 to 0.5 - negative comment; return value of getSentiment()
+0.3 - user opens blog to view article
+0.5 - user views itinerary section
+0.7 - likes blog
+0.5 to 1 - positive comment; return value of getSentiment()
+
+
+On login run,
+updateInterestVector() - to update hotel interest
+updatePOIcategories() - to update places interest
+updateBlogInterest() - to update blog interest

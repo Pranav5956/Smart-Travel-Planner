@@ -319,6 +319,7 @@ const PlanTripInformation = ({ stops, itinerary, setItinerary }) => {
       saveType: "hard",
     };
     await updateItineraryWeights(params.itineraryId, weights);
+    window.location.assign(`../itineraries/${params.itineraryId}`);
   };
 
   return (
@@ -363,17 +364,19 @@ const PlanTripInformation = ({ stops, itinerary, setItinerary }) => {
           setItinerary={setItinerary}
         />
       )}
-      <PlanTripHotelDetails
-        stopName={stops[selectedStop].name}
-        isOpen={selectedHotel.isOpen}
-        toggle={closeHotelModal}
-        hotelId={selectedHotel.hotelId}
-        filters={formatFilters(filterQueries)}
-        unsetHotelDetails={unsetHotelDetails}
-        setItinerary={setItinerary}
-        itinerary={itinerary}
-        thumbnail={selectedHotel.thumbnail}
-      />
+      {selectedHotel.hotelId && (
+        <PlanTripHotelDetails
+          stopName={stops[selectedStop].name}
+          isOpen={selectedHotel.isOpen}
+          toggle={closeHotelModal}
+          hotelId={selectedHotel.hotelId}
+          filters={formatFilters(filterQueries)}
+          unsetHotelDetails={unsetHotelDetails}
+          setItinerary={setItinerary}
+          itinerary={itinerary}
+          thumbnail={selectedHotel.thumbnail}
+        />
+      )}
       {placesCategories.categories.length > 0 && (
         <Modal
           className="plantrip__info-placesCategories"
@@ -513,14 +516,13 @@ const PlanTripInformation = ({ stops, itinerary, setItinerary }) => {
             onClick={() => setViewItinerary(true)}>
             View Itinerary
           </Button>
-          <Link
+          <Button
             color="success"
             className="btn btn-success btn-lg"
             size="lg"
-            onClick={onHardSaveItinerary}
-            to={`../itineraries/${params.itineraryId}`}>
+            onClick={onHardSaveItinerary}>
             Save Itinerary
-          </Link>
+          </Button>
         </div>
       </div>
       <div className="plantrip__info-main">

@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import Pusher from "pusher";
 
 dotenv.config();
 
@@ -51,12 +52,31 @@ app.listen(port, () => console.log("Server listening..."));
 
 // Watch for changes
 const db = mongoose.connection;
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APPID,
+  key: process.env.PUSHER_KEY,
+  secret: process.env.PUSHER_SECRET,
+  cluster: "ap2",
+  useTLS: true,
+});
 
 db.once("open", () => {
   const blogCollection = db.collection("blogs");
-  const changeStream = blogCollection.watch();
+  const blogChangeStream = blogCollection.watch();
 
-  changeStream.on("change", (change) => {
-    console.log(change);
+  blogChangeStream.on("change", (changeSummary) => {
+    pusher.trigger("smart-travel-planner", "blogs-updated", {
+      blogId: changeSummary.documentKey._id,
+    });
+  });
+
+  const commentsCollection = db.collection("comments");
+  const commentsChangeStream = commentsCollection.watch();
+
+  commentsChangeStream.on("change", (changeSummary) => {
+    if (changeSummary.operationType === "update")
+      pusher.trigger("smart-travel-planner", "comments-updated", {
+        commentId: changeSummary.documentKey._id,
+      });
   });
 });

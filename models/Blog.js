@@ -7,7 +7,7 @@ var blogSchema = new mongoose.Schema(
     thumbnail: String,
     cost: Number,
     duration: Number,
-    contents: [{ contentType: String, content: String }],
+    contents: [{ contentType: String, content: String, caption: String }],
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -26,8 +26,9 @@ var blogSchema = new mongoose.Schema(
     ],
     itinerary: {
       type: mongoose.Schema.Types.ObjectId,
-      // ref: "Itinerary",
+      ref: "Itinerary",
     },
+    blogUpdatedAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

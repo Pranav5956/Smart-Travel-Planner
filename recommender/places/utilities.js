@@ -1,5 +1,7 @@
 import axios from "axios";
 import UserProfile from "../../models/UserProfile.js";
+import POImap from "../../data/POImap.js";
+import { recommendCategories } from "./recommender.js";
 
 const OTMAPI_BASEURL = "https://api.opentripmap.com/0.1/en/places/";
 
@@ -71,3 +73,27 @@ export const updatePOIWeight = async (userId, level, xid) => {
     console.log(err);
   }
 };
+
+// To be executed on login
+export async function updatePOIcategories(userId) {
+  var POI = await recommendCategories(userId);
+  var allCategories = Object.keys(POImap);
+  POI = POI.filter((value) => allCategories.includes(value));
+  POI = POI.slice(0, 3);
+  while (POI.length != 3) {
+    POI.push("-");
+  }
+  var POIvec = [];
+  POI.forEach((place) => {
+    if (place == "-") POIvec.push(0);
+    else POIvec.push(POImap[place]);
+  });
+
+  await UserProfile.updateOne(
+    { userId: userId },
+    { POIcategories: POIvec },
+    function () {
+      console.log("POI categories updated");
+    }
+  );
+}

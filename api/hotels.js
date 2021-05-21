@@ -43,7 +43,7 @@ export const getHotels = async (id, filters, hotelIds = [], invoker = 0) => {
 
     return hotels;
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err.response.data, 1);
   }
 };
 
@@ -74,7 +74,7 @@ export const getCityInfo = async (city) => {
       defaultHotels: data.suggestions[1]?.entities,
     };
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err.response.data, 2);
   }
 };
 
@@ -133,7 +133,7 @@ const getMoreInfo = async (hotelId, filters) => {
       specialFeatures: data.specialFeatures,
     };
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err.response.data, 3);
   }
 };
 
@@ -156,7 +156,7 @@ const getPhotos = async (hotelId) => {
 
     return data.map((photo) => photo.mainUrl);
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err.response.data, 4);
   }
 };
 
@@ -188,7 +188,7 @@ const getReviews = async (hotelId) => {
       reviews: data.groupReview[0]?.reviews || [],
     };
   } catch (err) {
-    console.log(err.response.data);
+    console.log(err.response.data, 5);
   }
 };
 

@@ -2,19 +2,51 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: center;  
+  background: url("https://images.unsplash.com/photo-1572526474169-ff48188de458?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80");
+  background-size: cover;
   justify-content: center;
 }
 
-.login__card {
+.login__card-container {
   width: 40%;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 1em;
+  margin-top: 3rem;
+  padding: 0;
+}
+
+.login__card {
   padding: 0 3rem;
   padding-top: 2rem;
-  margin-top: 3rem;
   border-radius: 1em;
+  backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 16px 0 rgba(255, 255, 255, 0.1);
 }
 
 .login__form {
   padding: 1.3rem;
   padding-bottom: 0;
+}
+
+.login__icons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-decoration: none;
+}
+
+.login__icons a {
+  color: white;
+  font-size: 26px;
+  margin: 0 0.5rem;
+}
+
+.login__icons a svg {
+  transition: transform 0.1s ease-in-out;
+}
+
+.login__icons a svg:hover {
+  transform: scale(1.1);
 }

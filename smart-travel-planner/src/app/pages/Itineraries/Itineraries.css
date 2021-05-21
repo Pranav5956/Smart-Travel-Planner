@@ -48,6 +48,10 @@
   color: #007BFF;
 }
 
+.itinerary__sidebar-noResults {
+  text-align: center;
+}
+
 .itinerary__sidebar-itineraries {
   overflow-y: auto;
 }
@@ -93,7 +97,7 @@
 
 .itinerary__main-itinerary--info {
    min-height: 124px;
-   background-color: #6c757d;
+   background-color: #343A40;
 }
 
 .itinerary__main-itineraryName {

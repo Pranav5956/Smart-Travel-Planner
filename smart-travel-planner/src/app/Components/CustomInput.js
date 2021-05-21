@@ -7,18 +7,26 @@ import {
 } from "reactstrap";
 
 const CustomInput = ({
+  prependFieldIcon,
   appendFieldIcon,
+  options,
   field,
   form: { touched, errors },
   ...props
 }) => {
   return (
     <>
+      {prependFieldIcon && (
+        <InputGroupAddon addonType="prepend">
+          <InputGroupText role="button">{prependFieldIcon}</InputGroupText>
+        </InputGroupAddon>
+      )}
       <Input
         invalid={!!(touched[field.name] && errors[field.name])}
         {...field}
-        {...props}
-      />
+        {...props}>
+        {(props.type === "select" && options) || <></>}
+      </Input>
       {appendFieldIcon && (
         <InputGroupAddon addonType="append">
           <InputGroupText role="button">{appendFieldIcon}</InputGroupText>

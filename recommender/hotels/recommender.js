@@ -20,12 +20,12 @@ export const updateHotelWeight = async (
 ) => {
   try {
     // check if hotel exists in DB, else add
-    Hotel.find({ hotelId }, function (err, doc) {
+    Hotel.find({ hotelId: hotelId }, function (err, doc) {
       if (doc.length == 0) addHotel(hotelId, filters);
     });
 
     // locate user in DB, update hotelId to given level
-    var profile = await UserProfile.findOne({ userId });
+    var profile = await UserProfile.findOne({ userId: userId });
 
     if (!profile) return;
 
@@ -66,7 +66,7 @@ export const updateHotelWeight = async (
 // Run function on login
 // CALLABLE FUNCTION - updates the interest vector of the user at the start of a session
 export const updateInterestVector = async (userId) => {
-  var profile = await UserProfile.findOne({ userId });
+  var profile = await UserProfile.findOne({ userId: userId });
 
   var iVec = profile["interestVector"],
     timeWeight = [],
@@ -80,6 +80,7 @@ export const updateInterestVector = async (userId) => {
 
   await profile["hotels"].forEach((hotel) => {
     if (hotel["evaluated"] == false) {
+      console.log(1);
       timeWeight.push(hotel["timestamp"]);
       hotelIds.push(hotel["hotelId"]);
       levelWeight.push(hotel["level"]);
@@ -137,7 +138,7 @@ export const updateInterestVector = async (userId) => {
   );
 
   await UserProfile.updateOne(
-    { userId },
+    { userId: userId },
     { interestVector: iVec },
     function () {
       console.log("Interest Vector Updated");

@@ -247,10 +247,20 @@ export const weightedAverage = (
   count
 ) => {
   var weightedSum = interestVector[feature] * count;
+  console.log(
+    interestVector,
+    featureVectors,
+    feature,
+    timeWeight,
+    levelWeight,
+    count
+  );
   featureVectors.forEach(function (fVec, index) {
     weightedSum += fVec[feature] * timeWeight[index] * levelWeight[index];
     count += 1;
+    console.log(count);
   });
+  console.log(weightedSum);
   return (weightedSum / count).toFixed(3);
 };
 
