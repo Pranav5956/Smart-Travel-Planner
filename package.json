@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/Pranav5956/Smart-Travel-Planner#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "compute-cosine-similarity": "^1.0.0",
     "dotenv": "^8.2.0",
